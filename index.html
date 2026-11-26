@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#ddd5be" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Song of the River" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="icon" href="%BASE_URL%art/brand/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" href="%BASE_URL%art/brand/favicon-16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="%BASE_URL%art/brand/favicon-32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="%BASE_URL%art/brand/favicon-48.png" sizes="48x48" />
+    <link rel="icon" type="image/png" href="%BASE_URL%art/brand/favicon-128.png" sizes="128x128" />
+    <link rel="icon" type="image/png" href="%BASE_URL%art/brand/favicon-512.png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="%BASE_URL%art/brand/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
+    <link rel="preload" href="/node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-italic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <title>Song of the River</title>
+    <meta name="description" content="An adventure down a winding river, through shifting seasons, to a distant sea." />
+    <style>
+      /* The ground tone of the loader, the title's loading paper and the start veil (tokens.css --ground-soft), so nothing ever flashes white. */
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #ddd5be; overscroll-behavior: none; }
+      /* The valley fills the window; the interface is layered over it. */
+      #stage { position: fixed; inset: 0; }
+      #stage canvas { display: block; }
+      /* Until the interface takes over: the same warm stone paper as the title's
+         loading screen, so the handover is invisible and there is one loader.
+         It needs no request, so it paints at once. A tap leaves a ring.
+         (.river-line below is the start veil's progress mark.) */
+      #loading {
+        position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; touch-action: manipulation;
+        background: radial-gradient(ellipse 85% 75% at 50% 44%, #ece5d3 0%, #ded6bf 58%, #cbc2a7 100%);
+      }
+      /* The swash, revealed from its left end by a window sliding over it (both transforms, so on the compositor). */
+      .river-line { position: relative; width: min(220px, 56vw); color: #4c8995; }
+      .river-line-window { overflow: hidden; transform: translateX(calc((var(--p, 1) - 1) * 100%)); transition: transform 1.4s cubic-bezier(0.45, 0, 0.3, 1); }
+      .river-line-ink { transform: translateX(calc((1 - var(--p, 1)) * 100%)); transition: transform 1.4s cubic-bezier(0.45, 0, 0.3, 1); }
+      .river-line svg { display: block; width: 100%; height: auto; }
+      .river-ring { position: fixed; width: 36px; height: 36px; margin: -18px 0 0 -18px; border: 1px solid #4c8995; border-radius: 50%; pointer-events: none; animation: sr-ring 1.3s ease-out forwards; }
+      @keyframes sr-ring { from { transform: scale(0.2); opacity: 0.6; } to { transform: scale(1.4); opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) {
+        .river-ring { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage"></div>
+    <div id="ui"></div>
+    <div id="loading" aria-hidden="true"></div>
+    <script>
+      // A tap on the loading paper leaves a ring on the water (the start veil does the same).
+      document.getElementById('loading').addEventListener('pointerdown', function (e) {
+        var ring = document.createElement('span');
+        ring.className = 'river-ring';
+        ring.style.left = e.clientX + 'px';
+        ring.style.top = e.clientY + 'px';
+        this.appendChild(ring);
+        setTimeout(function () { ring.remove(); }, 1400);
+      });
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

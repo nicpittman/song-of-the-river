@@ -1,0 +1,431 @@
+/*
+ * Song of the River: the kit. One surface, one ink, one typeface.
+ *
+ *   .sr-caption, .sr-slip, .sr-notice, .sr-dialog   the popup kit (see below), with .sr-transient
+ *   .sr-word     a button: a word in green ink over a 1px underline that thickens on hover and focus.
+ *                .is-primary sets it in small capitals; .is-quiet in the softer ink; .is-danger in rust.
+ *   .sr-chip     a small paper label holding a line of text or a few words.
+ *   .sr-rule     a hairline; .is-short is a centred dash of it between sections.
+ *   .sr-caps     small capitals for labels.
+ *   .sr-row      a list row: label left, value or control right, hairline beneath.
+ *   .sr-slider   a range input: a hairline track, an ink fill, a small paper thumb.
+ *   .sr-toggle   a choice of a few words; the chosen one is inked and underlined.
+ *
+ * Every pressable thing is at least --hit (44px) in both directions, however
+ * small its visible mark. Keyboard focus strengthens the ink and underline.
+ *
+ *   .portrait    a friend's painted face in a soft round frame (see sketches/portrait.ts).
+ */
+
+/* ---------- Base ---------- */
+
+.sr-ui {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  color: var(--green-ink);
+  font: 500 var(--t-body) / 1.4 var(--serif);
+  font-kerning: normal;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.sr-ui *,
+.sr-ui *::before,
+.sr-ui *::after {
+  box-sizing: border-box;
+}
+
+.sr-ui [hidden] {
+  display: none !important;
+}
+
+.sr-ui button,
+.sr-ui input,
+.sr-ui summary {
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sr-ui :focus {
+  outline: none;
+}
+
+.sr-ui :focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: .3em;
+}
+
+.sr-ui img, .sr-ui svg { -webkit-user-drag: none; user-select: none; }
+
+.sr-ui .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Sketches and marks take the ink of the text around them. */
+.sr-ui .sketch,
+.sr-ui .mark {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+  overflow: visible;
+}
+
+.sr-ui .sketch.is-unfound {
+  color: var(--green-ink-soft);
+}
+
+/* A mark standing for something not (yet) earned keeps its line and drops its wash. */
+.sr-ui .is-bare .mark > g[style] {
+  display: none;
+}
+
+/* ---------- The popup kit: caption, slip, notice, dialog ----------
+   Four ways of putting words over the valley, one material for all of them:
+   soft paper, see-through enough that the painting still shows, a fine edge,
+   one radius, one shadow. Buttons inside are always .sr-word.
+
+     .sr-caption   a pencilled line written straight on the valley: no paper,
+                   italic, an ink halo, a fine pencil rule beneath. Labels in
+                   the landscape, the opening hint, the season's name.
+     .sr-slip      a small info card beside a thing: what a place is, the
+                   selected path, a tip. Small type, close padding.
+     .sr-notice    a quiet line that arrives and leaves (with .is-shown):
+                   toasts, "found" notes. One line, italic, centred.
+     .sr-dialog    a sheet you read and answer: settings, confirmations,
+                   results, the journal. A little more opaque, for reading.
+     .sr-transient makes a caption or slip come and go like a notice.
+
+   .sr-paper and .sr-popup are the older names for dialog and notice and
+   remain for code that still uses them. */
+
+.sr-ui :is(.sr-slip, .sr-notice, .sr-popup, .sr-dialog, .sr-paper) {
+  background: var(--paper-glass);
+  border: 1px solid var(--edge-fine);
+  border-radius: var(--r-soft);
+  box-shadow: var(--shadow-soft-sm);
+  -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(1.06);
+  backdrop-filter: blur(var(--blur-glass)) saturate(1.06);
+  color: var(--green-ink);
+}
+
+.sr-ui :is(.sr-dialog, .sr-paper) {
+  background: var(--paper-soft);
+  box-shadow: var(--shadow-soft);
+  pointer-events: auto;
+}
+
+.sr-ui .sr-slip {
+  padding: 8px 12px 9px;
+  font-size: var(--t-small);
+  line-height: 1.35;
+  pointer-events: auto;
+}
+
+.sr-ui :is(.sr-notice, .sr-popup) {
+  padding: 8px 16px 9px;
+  font: italic 500 var(--t-body) / 1.35 var(--serif);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.sr-ui .sr-caption {
+  display: inline-block;
+  padding: 0 2px 3px;
+  font: italic 500 var(--t-lead) / 1.3 var(--serif);
+  color: var(--green-ink);
+  text-shadow: var(--halo-ink);
+  background: linear-gradient(var(--pencil), var(--pencil)) left bottom / 100% 1px no-repeat;
+}
+
+/* Coming and going: fades in and rises 4px; fades out where it stands. */
+.sr-ui :is(.sr-notice, .sr-popup, .sr-transient) {
+  --pop-x: 0px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(var(--pop-x), 4px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), visibility 0s linear var(--dur);
+}
+
+.sr-ui :is(.sr-notice, .sr-popup, .sr-transient).is-shown {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(var(--pop-x), 0);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), visibility 0s;
+}
+
+.sr-ui.is-reduced :is(.sr-notice, .sr-popup, .sr-transient) {
+  transform: translate(var(--pop-x), 0);
+}
+
+/* ---------- Words (buttons) ---------- */
+
+.sr-ui .sr-word {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: var(--hit);
+  min-height: var(--hit);
+  margin: 0;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  font: 500 var(--t-word) / 1.2 var(--serif);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--green-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  text-decoration-skip-ink: none;
+  cursor: pointer;
+  transition: text-decoration-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+@media (hover: hover) {
+  .sr-ui .sr-word:hover:not(:disabled) {
+    text-decoration-thickness: 2px;
+    text-decoration-color: currentColor;
+  }
+}
+
+.sr-ui .sr-word:focus-visible {
+  text-decoration-thickness: 2px;
+  text-decoration-color: currentColor;
+}
+
+.sr-ui .sr-word:active:not(:disabled) {
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .sr-word:disabled {
+  color: var(--green-ink-faint);
+  text-decoration-color: transparent;
+  cursor: default;
+}
+
+/* Primary: small capitals, the underline in full ink. */
+.sr-ui .sr-word.is-primary {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  text-decoration-color: var(--green-ink);
+  text-underline-offset: 0.45em;
+}
+
+.sr-ui .sr-word.is-quiet {
+  color: var(--green-ink-soft);
+  text-decoration-color: var(--rule);
+}
+
+.sr-ui .sr-word.is-danger {
+  color: var(--rust-ink);
+  text-decoration-color: currentColor;
+}
+
+/* A mark beside a word sits on the text's middle and never takes the underline. */
+.sr-ui .sr-word .mark,
+.sr-ui .sr-word .ico {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---------- Chip ---------- */
+
+.sr-ui .sr-chip {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 0 8px;
+  background: var(--paper-soft);
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-soft);
+  box-shadow: var(--shadow-soft-sm);
+  font-size: var(--t-small);
+  color: var(--green-ink);
+}
+
+/* ---------- Rule, capitals, rows ---------- */
+
+.sr-ui .sr-rule {
+  display: block;
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.sr-ui .sr-rule.is-short {
+  width: 40px;
+  margin-inline: auto;
+  border-top-color: var(--rule-strong);
+}
+
+.sr-ui .sr-caps {
+  font-size: var(--t-caps);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .sr-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 52px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.sr-ui .sr-row:last-child {
+  border-bottom: 0;
+}
+
+/* ---------- Slider ---------- */
+
+.sr-ui .sr-slider {
+  --v: 50%;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--hit);
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sr-ui .sr-slider::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(to right, var(--green-ink) var(--v), var(--rule) var(--v)); /* a hard split, not a gradient: the filled part and the rest */
+}
+
+.sr-ui .sr-slider::-moz-range-track {
+  height: 1px;
+  background: var(--rule);
+}
+
+.sr-ui .sr-slider::-moz-range-progress {
+  height: 2px;
+  background: var(--green-ink);
+}
+
+.sr-ui .sr-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -7px;
+  border: 1px solid var(--green-ink);
+  border-radius: 50%;
+  background: var(--ivory);
+  transition: background-color var(--dur-fast) var(--ease);
+}
+
+.sr-ui .sr-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--green-ink);
+  border-radius: 50%;
+  background: var(--ivory);
+}
+
+@media (hover: hover) {
+  .sr-ui .sr-slider:hover::-webkit-slider-thumb {
+    background: var(--ivory-deep);
+  }
+}
+
+.sr-ui .sr-slider:focus-visible {
+  outline-offset: 0;
+}
+
+/* ---------- Toggle ---------- */
+
+.sr-ui .sr-toggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sr-ui .sr-toggle > button {
+  min-width: var(--hit);
+  min-height: var(--hit);
+  padding: 0 8px;
+  border: 0;
+  background: none;
+  font: 500 var(--t-word) / 1.2 var(--serif);
+  color: var(--green-ink-soft);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  cursor: pointer;
+  transition: text-decoration-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+@media (hover: hover) {
+  .sr-ui .sr-toggle > button:hover {
+    color: var(--green-ink);
+    text-decoration-color: var(--rule-strong);
+  }
+}
+
+.sr-ui .sr-toggle > button[aria-checked='true'] {
+  color: var(--green-ink);
+  text-decoration-color: var(--green-ink);
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- Portraits ---------- */
+
+/* A friend's painted face in a soft round frame, tinted faintly with their garment colour. */
+.sr-ui .portrait {
+  --portrait-size: 48px;
+  --portrait-tint: var(--green-ink-faint);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--portrait-size);
+  height: var(--portrait-size);
+  overflow: hidden;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 36%, color-mix(in srgb, var(--portrait-tint) 10%, #fbf8f0) 0%, color-mix(in srgb, var(--portrait-tint) 24%, var(--ivory-deep)) 100%);
+  box-shadow: inset 0 0 0 1px var(--rule-soft), var(--shadow-soft-sm);
+  vertical-align: middle;
+}
+
+.sr-ui .portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+}
+
+.sr-ui .portrait.is-sketch {
+  color: var(--green-ink);
+}
+

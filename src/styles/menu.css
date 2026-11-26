@@ -1,0 +1,955 @@
+/*
+ * Song of the River: the title screen (which is also the loading screen),
+ * settings, results and the field journal. The title's words sit straight on
+ * the living valley, over a feathered veil of warm mist that is only as strong
+ * as legibility needs; every sheet is a `.sr-paper` and every button a
+ * `.sr-word` (see `kit.css`).
+ */
+
+.sr-ui .overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s var(--ease), visibility 0s linear 0.45s;
+}
+
+.sr-ui .overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.45s var(--ease);
+}
+
+/* ---------- The title ---------- */
+
+.sr-ui .menu-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  padding: calc(var(--edge-t) + 16px) calc(var(--edge-r) + 8px) calc(var(--edge-b) + 16px) calc(var(--edge-l) + 8px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sr-ui .menu-card {
+  position: relative;
+  isolation: isolate;
+  flex: none;
+  width: min(480px, 100%);
+  padding: 44px 40px 36px;
+  text-align: center;
+}
+
+/* The veil: a faint, smooth radial fade of warm mist behind the words, gone
+   well before its edge, so the valley shows all round. No blur under it
+   (blurring through a mask is what made it blotchy). */
+.sr-ui .menu-card::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -24px -32px;
+  background: linear-gradient(90deg, #f0e7d200, #f0e7d240 20%, #f0e7d26b 50%, #f0e7d240 80%, #f0e7d200);
+  mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  pointer-events: none;
+  transition: opacity 0.6s var(--ease);
+}
+
+.sr-ui .menu-card :is(.title, .tagline, .entry-label, .entry-sub, .view-title, .setting-label, .reset-note, .sr-word, .sr-toggle > button) {
+  text-shadow: var(--halo-ink);
+}
+
+/* The six friends, painted, in a quiet row under the line that sends them out. */
+.sr-ui .menu-friends {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sr-ui .menu-friends .portrait {
+  --portrait-size: 46px;
+}
+
+.sr-ui .menu-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sr-ui .lockup {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--green-ink);
+}
+
+.sr-ui .title {
+  margin: 0;
+  font: 600 56px/1 var(--serif);
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+  color: var(--green-ink);
+}
+
+.sr-ui .title em {
+  margin: 0 0.04em;
+  font-size: 0.6em;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.sr-ui .title-swash {
+  display: block;
+  align-self: flex-end;
+  width: 66%;
+  margin: -0.1em -0.1em 0 0;
+  color: var(--teal);
+}
+
+.sr-ui .swash {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sr-ui .tagline {
+  max-width: 22em;
+  margin: 22px 0 0;
+  font: italic 500 var(--t-lead) / 1.3 var(--serif);
+  color: var(--green-ink-soft);
+  text-wrap: balance;
+}
+
+.sr-ui .menu-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sr-ui .entries {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.sr-ui .entries > .sr-rule,
+.sr-ui .settings > .sr-rule {
+  margin: 30px auto 20px;
+}
+
+/* An entry is a word at the title-screen size. Hover, focus and a press all
+   mark it the same way: the letters strengthen and the river curve from the
+   title's swash draws in beneath them, left to right. Never a box. */
+.sr-ui .entry {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 200px;
+  min-height: var(--hit);
+  padding: 6px 12px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.sr-ui .entry-label {
+  position: relative;
+  display: inline-grid;
+  justify-items: center;
+  font: 500 25px/1.15 var(--serif);
+  letter-spacing: 0.03em;
+  color: var(--green-ink);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+/* An invisible bold copy reserves the width, so a bolder label never nudges its neighbours. */
+.sr-ui .entry-label::after {
+  content: attr(data-label);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: 600;
+}
+
+/* The curve: the title swash's own path (TITLE_SWASH in icons.ts), as a mask, revealed by a clip. */
+.sr-ui :is(.entry-label, .setting-word)::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 72px;
+  height: 7px;
+  margin-left: -36px;
+  background: var(--teal);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 18' preserveAspectRatio='none'%3E%3Cpath d='M2 13.6c34-6.4 74-9.4 118-8.6 32 .6 62 3 96-1.6 1.4-.2 2 .9.8 1.5-34 9.6-64 7.7-98 5.6-40-2.4-76-1.4-115.4 4.6-1.9.3-3.1-1.1-1.4-1.5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 18' preserveAspectRatio='none'%3E%3Cpath d='M2 13.6c34-6.4 74-9.4 118-8.6 32 .6 62 3 96-1.6 1.4-.2 2 .9.8 1.5-34 9.6-64 7.7-98 5.6-40-2.4-76-1.4-115.4 4.6-1.9.3-3.1-1.1-1.4-1.5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  clip-path: inset(0 100% 0 0);
+  opacity: 0.9;
+  transition: clip-path 0.28s var(--ease);
+  pointer-events: none;
+}
+
+.sr-ui .entry-sub {
+  font: italic 500 var(--t-small) / 1.25 var(--serif);
+  color: var(--green-ink-soft);
+}
+
+@media (hover: hover) {
+  .sr-ui .entry:hover .entry-label {
+    font-weight: 600;
+  }
+  .sr-ui .entry:hover .entry-label::before {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.sr-ui .entry:is(:focus-visible, :active) .entry-label {
+  font-weight: 600;
+}
+
+.sr-ui .entry:is(:focus-visible, :active) .entry-label::before {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Keyboard focus: the curve at full strength, and the kit's outline kept off the word itself. */
+.sr-ui .entry:focus-visible {
+  outline: none;
+}
+
+.sr-ui .entry:focus-visible .entry-label::before {
+  opacity: 1;
+  height: 8px;
+}
+
+.sr-ui.is-reduced :is(.entry-label, .setting-word)::before {
+  transition: none;
+}
+
+.sr-ui .menu .view {
+  animation: sr-view-in 0.4s var(--ease) both;
+}
+
+@keyframes sr-view-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Settings, inside the same card ---------- */
+
+.sr-ui .settings {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
+
+.sr-ui .view-title {
+  margin: 0 0 4px;
+}
+
+.sr-ui .setting-list {
+  border-top: 1px solid var(--rule);
+  text-align: left;
+}
+
+.sr-ui .setting {
+  display: grid;
+  grid-template-columns: 7.5em minmax(0, 1fr);
+}
+
+.sr-ui .setting-label {
+  font-size: var(--t-word);
+  color: var(--green-ink);
+}
+
+.sr-ui .setting .sr-toggle {
+  margin-left: -8px;
+}
+
+.sr-ui .reset {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: -6px;
+}
+
+.sr-ui .reset-note {
+  margin: 8px 6px 0;
+  font: italic 500 var(--t-body) / 1.3 var(--serif);
+  color: var(--green-ink);
+}
+
+.sr-ui .reset-row {
+  display: flex;
+  gap: 10px;
+}
+
+.sr-ui .back {
+  align-self: center;
+  margin-top: 14px;
+}
+
+/* ---------- Loading: the window is warm stone; the swash draws as progress ---------- */
+
+@property --sr-swash {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: -12%;
+}
+
+.sr-ui .menu-paper {
+  position: absolute;
+  inset: 0;
+  background: var(--ground-soft);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sr-ui.is-loading .menu-paper {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* While the whole window is paper the veil has nothing to soften. */
+.sr-ui.is-loading .menu-card::before {
+  opacity: 0;
+}
+
+.sr-ui.is-loading .menu {
+  transition: none;
+}
+
+/* The swash is revealed from its left end with a soft leading edge; its shape is never stretched. */
+.sr-ui.is-loading .title-swash {
+  -webkit-mask-image: linear-gradient(90deg, #000 var(--sr-swash), transparent calc(var(--sr-swash) + 12%));
+  mask-image: linear-gradient(90deg, #000 var(--sr-swash), transparent calc(var(--sr-swash) + 12%));
+  transition: --sr-swash 0.45s cubic-bezier(0.2, 0.6, 0.35, 1);
+}
+
+.sr-ui.is-loading .menu .lockup {
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+
+.sr-ui.is-loading.is-titled .menu .lockup {
+  opacity: 1;
+}
+
+/* While loading, a quiet line under the title names what is arriving. It sits clear of the layout
+   (absolutely, below the lockup), so nothing moves when it goes. */
+.sr-ui .menu-head { position: relative; }
+.sr-ui .menu-loading-note {
+  position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
+  margin: 14px 0 0; white-space: nowrap;
+  font: italic 500 17px/1.3 var(--serif); color: var(--green-ink-soft);
+  opacity: 0; transition: opacity 0.4s var(--ease);
+  pointer-events: none;
+}
+.sr-ui.is-loading.is-titled .menu-loading-note:not(:empty) { opacity: 1; }
+.sr-ui:not(.is-loading) .menu-loading-note { display: none; }
+
+/* The tagline and entries keep their room while loading, so nothing moves when they appear. */
+.sr-ui.is-loading .tagline,
+.sr-ui.is-loading .menu-body {
+  visibility: hidden;
+}
+
+/* The reveal: the window's paper lifts away to the card, then the words arrive. */
+.sr-ui.is-revealing .menu-paper {
+  visibility: visible;
+  animation: sr-paper-away 0.9s cubic-bezier(0.4, 0, 0.3, 1) forwards;
+}
+
+@keyframes sr-paper-away {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.sr-ui.is-revealing .tagline {
+  animation: sr-rise 0.8s var(--ease) 0.5s both;
+}
+
+.sr-ui.is-revealing .menu .entries > * {
+  animation: sr-rise 0.7s var(--ease) calc(0.7s + var(--i, 0) * 0.08s) both;
+}
+
+@keyframes sr-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- A sheet over the valley: results and the journal ---------- */
+
+.sr-ui .sheet-veil {
+  position: absolute;
+  inset: 0;
+  background: var(--veil);
+  pointer-events: auto;
+}
+
+.sr-ui .results,
+.sr-ui .journal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--edge-t) + 12px) calc(var(--edge-r) + 4px) calc(var(--edge-b) + 12px) calc(var(--edge-l) + 4px);
+}
+
+/* ---------- Results ---------- */
+
+.sr-ui .results-card {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 32px 36px 22px;
+  text-align: center;
+}
+
+.sr-ui .results-valley {
+  margin: 0;
+}
+
+.sr-ui .results-headline {
+  margin: 8px 0 0;
+  font: 600 var(--t-title) / 1.15 var(--serif);
+  color: var(--green-ink);
+  text-wrap: balance;
+}
+
+.sr-ui .results-card > .sr-rule {
+  margin: 18px auto;
+}
+
+.sr-ui .blooms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.sr-ui .bloom-row {
+  display: flex;
+  gap: 14px;
+}
+
+.sr-ui .bloom .mark {
+  width: 34px;
+  height: 34px;
+}
+
+.sr-ui .bloom:not(.is-earned) {
+  color: var(--green-ink-faint);
+}
+
+.sr-ui .results.is-open .bloom.is-earned {
+  animation: sr-rise 0.6s var(--ease) calc(0.4s + var(--i, 0) * 0.35s) both;
+}
+
+.sr-ui .bloom-labels {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  border-top: 1px solid var(--rule);
+}
+
+.sr-ui .bloom-labels li {
+  min-height: 40px;
+  justify-content: flex-start;
+  font-size: var(--t-body);
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .bloom-labels li.is-earned {
+  color: var(--green-ink);
+}
+
+.sr-ui .bloom-labels .mark {
+  width: 16px;
+  height: 16px;
+}
+
+.sr-ui .shortfalls p,
+.sr-ui .moments p {
+  margin: 0 0 8px;
+  font: italic 500 var(--t-body) / 1.35 var(--serif);
+  color: var(--green-ink);
+}
+
+.sr-ui .moments {
+  margin-top: 14px;
+}
+
+.sr-ui .moments p {
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .results-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 18px;
+  margin-top: 18px;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+}
+
+/* ---------- The field journal ---------- */
+
+.sr-ui .journal-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(820px, 100%);
+  max-height: 100%;
+}
+
+.sr-ui .journal-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 2px 16px;
+  padding: 24px 28px 14px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.sr-ui .journal-title {
+  margin: 0;
+  font: 600 var(--t-title) / 1.1 var(--serif);
+}
+
+.sr-ui .journal-count {
+  grid-column: 1;
+  margin: 0;
+  font: italic 500 var(--t-body) / 1.3 var(--serif);
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .journal-close {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: start;
+  margin: -8px -6px 0 0;
+  width: 32px;
+  height: 32px;
+  font-size: 25px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.sr-ui .journal-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px 28px 24px;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.sr-ui .journal-scroll:focus-visible {
+  outline-offset: -4px;
+}
+
+.sr-ui .journal-group-title {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 10px;
+}
+
+.sr-ui .journal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sr-ui .jcard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 132px;
+  padding: 12px 14px 14px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-paper);
+}
+
+.sr-ui .jcard .sketch {
+  margin: 0 0 4px -4px;
+}
+
+.sr-ui .jcard-title {
+  margin: 0;
+  font: 600 var(--t-word) / 1.2 var(--serif);
+}
+
+.sr-ui .jcard-text {
+  margin: 0;
+  font: italic 500 var(--t-small) / 1.35 var(--serif);
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .jcard.is-unfound {
+  border-style: dashed;
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .jcard.is-unfound .jcard-text {
+  color: var(--green-ink-soft);
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 760px) {
+  .sr-ui .menu-card {
+    padding: 32px 14px 22px;
+  }
+  .sr-ui .menu-card::before {
+    inset: -24px -16px;
+  }
+  .sr-ui .menu-friends {
+    gap: 6px;
+  }
+  .sr-ui .menu-friends .portrait {
+    --portrait-size: 40px;
+  }
+  .sr-ui .title {
+    font-size: 46px;
+  }
+  .sr-ui .tagline {
+    max-width: 16em;
+    font-size: 18px;
+  }
+  .sr-ui .entry-label {
+    font-size: 23px;
+  }
+  .sr-ui .results-card {
+    padding: 26px 20px 16px;
+  }
+  .sr-ui .journal-head {
+    padding: 18px 16px 12px;
+  }
+  .sr-ui .journal-scroll {
+    padding: 4px 16px 18px;
+  }
+  .sr-ui .journal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .sr-ui .jcard {
+    padding: 10px;
+  }
+}
+
+/* Short landscape windows: a more compact card. */
+@media (max-height: 560px) {
+  .sr-ui .menu-card {
+    padding: 22px 28px 16px;
+  }
+  .sr-ui .title {
+    font-size: 40px;
+  }
+  .sr-ui .tagline {
+    margin-top: 8px;
+  }
+  .sr-ui .entries > .sr-rule,
+  .sr-ui .settings > .sr-rule {
+    margin: 12px auto 6px;
+  }
+  .sr-ui .entry-sub {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .sr-ui .title {
+    font-size: 40px;
+  }
+}
+
+/* ---------- Reduced motion: fades only ---------- */
+
+.sr-ui.is-reduced.is-revealing .menu-paper {
+  animation: sr-paper-away 0.4s linear forwards;
+}
+
+.sr-ui.is-reduced.is-revealing .tagline,
+.sr-ui.is-reduced.is-revealing .menu .entries > *,
+.sr-ui.is-reduced .results.is-open .bloom.is-earned {
+  animation: sr-view-in 0.4s linear both;
+}
+
+/* While a results card is up, the in-play chips step back; the clock stays. */
+.sr-ui.results-open .hud > :not(.clock) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ---------- Starting a game: a soft veil, then the morning ---------- */
+
+/* The menu's words ease away as soon as an entry is pressed. */
+.sr-ui .menu.is-leaving .menu-card {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+/* Warm paper mist over the whole valley while the game is built behind it. */
+.sr-ui .start-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: var(--ground-soft);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.55s var(--ease), visibility 0s linear 0.55s;
+}
+
+.sr-ui .start-veil.is-up {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.55s var(--ease);
+}
+
+/* Lifting: slowly, onto the morning. */
+.sr-ui .start-veil.is-lifting {
+  visibility: visible;
+  opacity: 0;
+  transition: opacity 1.5s cubic-bezier(0.45, 0, 0.3, 1);
+}
+
+.sr-ui .start-veil {
+  grid-template-rows: 1fr auto auto 1fr;
+  gap: 18px;
+}
+
+.sr-ui .start-veil-line {
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: italic 500 var(--t-lead) / 1.2 var(--serif);
+  color: var(--green-ink-soft);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease) 0.2s;
+}
+
+.sr-ui .start-veil .river-line {
+  grid-row: 3;
+  animation: sr-line-breathe 5s ease-in-out 1.6s infinite;
+}
+
+/* At most a very slow breath once it is drawn. */
+@keyframes sr-line-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.sr-ui.is-reduced .start-veil .river-line {
+  animation: none;
+}
+
+.sr-ui.is-reduced .river-line-window,
+.sr-ui.is-reduced .river-line-ink {
+  transition: none;
+}
+
+.sr-ui .start-veil.is-up .start-veil-line {
+  opacity: 1;
+}
+
+.sr-ui .start-veil.is-lifting .start-veil-line {
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+/* The notebook and the season tab arrive after the valley has come through the mist. */
+.sr-ui.is-arriving .nb,
+.sr-ui.is-arriving .clock {
+  opacity: 0;
+}
+
+.sr-ui.is-arrived .nb,
+.sr-ui.is-arrived .clock {
+  animation: sr-arrive 0.9s var(--ease) both;
+}
+
+@keyframes sr-arrive {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sr-ui.is-reduced .start-veil,
+.sr-ui.is-reduced .start-veil.is-up {
+  transition: opacity 0.2s linear, visibility 0s linear 0.2s;
+}
+
+.sr-ui.is-reduced .start-veil.is-up {
+  transition: opacity 0.2s linear;
+}
+
+.sr-ui.is-reduced .start-veil.is-lifting {
+  transition: opacity 0.3s linear;
+}
+
+.sr-ui.is-reduced .menu.is-leaving .menu-card {
+  transform: none;
+}
+
+.sr-ui.is-reduced.is-arrived .nb,
+.sr-ui.is-reduced.is-arrived .clock {
+  animation-duration: 0.2s;
+}
+
+
+/* The title overlay lets the valley receive input; settings controls must opt in. */
+.sr-ui .menu.is-open .settings,
+.sr-ui .menu.is-open .settings :is(input, select, button, label) { pointer-events: auto; }
+
+.sr-ui .hotkey-list { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 9px 22px; text-align: left; max-width: 460px; font-size: 16px; line-height: 1.25; }
+.sr-ui .hotkey-list dt { font-weight: 600; color: var(--green-ink); }
+.sr-ui .hotkey-list dd { margin: 0; color: var(--green-ink); }
+@media (max-width: 760px) { .sr-ui .hotkey-list { gap: 8px 12px; font-size: 14px; } }
+
+/* Small lettering needs crisp ink; the title alone keeps its painted halo. */
+.sr-ui .menu-card .tagline {max-width:27em;font-size:20px;line-height:1.4;font-weight:400;font-style:italic;color:var(--green-ink);opacity:1;text-shadow:none;filter:none;}
+@media(max-width: 760px){.sr-ui .menu-card .tagline{max-width:23em;font-size:18px;line-height:1.4;}}
+
+/* Settings share the title's feathered ivory wash and plain ink. Extra
+   coverage supports small controls without turning the landscape into a panel. */
+.sr-ui .menu[data-view='settings'] .menu-card::before,
+.sr-ui .menu[data-view='hotkeys'] .menu-card::before {
+  opacity:1;
+  background:linear-gradient(90deg,#f0e7d200,#f0e7d240 20%,#f0e7d299 50%,#f0e7d240 80%,#f0e7d200);
+  mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);
+  -webkit-mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);
+}
+.sr-ui .menu .settings,
+.sr-ui .menu .settings * {text-shadow:none;filter:none;}
+.sr-ui .menu .settings :is(.setting-label,.sr-word,.sr-toggle > button,.reset-note,.view-title) {color:#233b34;opacity:1;text-shadow:none;filter:none;}
+.sr-ui .settings {color:#233b34;}
+.sr-ui .menu[data-view='settings'] .settings {width:min(360px,100%);margin-inline:auto;align-self:center;}
+.sr-ui .settings .view-title {font:500 25px/1.2 var(--serif);letter-spacing:.03em;text-transform:none;margin-bottom:14px;}
+.sr-ui .settings > .sr-rule {margin:20px auto 14px;}
+.sr-ui .settings .setting-list {border:0;width:100%;}
+.sr-ui .settings .setting {display:grid;grid-template-columns:7em minmax(0,1fr);border:0;min-height:52px;gap:0 16px;padding:4px 0;}
+.sr-ui .settings .setting-label {font-weight:500;line-height:1.3;}
+.sr-ui .settings .setting .sr-toggle {margin:0;justify-content:center;}
+.sr-ui .settings .sr-word:not(.is-danger) {text-decoration:none;font-weight:500;}
+.sr-ui .settings .setting-word {position:relative;display:inline-grid;justify-items:center;line-height:1.2;}
+.sr-ui .settings .setting-word::after {content:attr(data-label);height:0;overflow:hidden;visibility:hidden;font-weight:600;}
+.sr-ui .settings .setting-word::before {left:50%;bottom:-7px;width:100%;max-width:72px;height:6px;margin:0;transform:translateX(-50%);}
+.sr-ui .settings .sr-word:not(.is-danger):focus-visible .setting-word::before {clip-path:inset(0);}
+.sr-ui .settings .sr-word.is-danger .setting-word::before {content:none;}
+.sr-ui .settings .sr-slider::-webkit-slider-runnable-track {background:linear-gradient(to right,var(--teal) var(--v),rgba(41,61,56,.22) var(--v));}
+.sr-ui .settings .sr-slider::-moz-range-track {background:rgba(41,61,56,.22);}
+.sr-ui .settings .sr-slider::-moz-range-progress {background:var(--teal);}
+.sr-ui .settings .sr-slider::-webkit-slider-thumb {border-color:var(--teal);}
+.sr-ui .settings .sr-slider::-moz-range-thumb {border-color:var(--teal);}
+.sr-ui .settings .sr-toggle > button {display:inline-flex;align-items:center;justify-content:center;opacity:1;background:none;text-decoration:none;}
+.sr-ui .settings .sr-toggle > button[aria-checked='true'] {font-weight:600;}
+.sr-ui .settings .sr-toggle > button[aria-checked='true'] .setting-word::before,
+.sr-ui .settings .sr-toggle > button:focus-visible .setting-word::before {clip-path:inset(0);opacity:1;}
+@media(hover:hover){
+  .sr-ui .settings .sr-word:not(.is-danger):hover .setting-word::before {clip-path:inset(0);}
+  .sr-ui .settings .sr-toggle > button:hover .setting-word::before {clip-path:inset(0);}
+  .sr-ui .settings .sr-toggle > button:not([aria-checked='true']):hover .setting-word::before {opacity:.45;}
+}
+.sr-ui .settings .reset {align-items:center;gap:0;width:100%;min-width:0;margin:0;}
+.sr-ui .settings .reset-note {margin:0 0 4px;font-size:17px;line-height:1.4;text-align:center;}
+.sr-ui .settings .reset-row {flex-direction:column;align-items:center;justify-content:center;gap:0;}
+.sr-ui .settings .sr-clear-scope {flex-wrap:wrap;gap:0;}
+.sr-ui .settings .sr-clear-scope > button {padding:0 4px;font-size:16px;}
+.sr-ui .menu .settings .sr-word.is-danger {color:#854636;}
+.sr-ui .settings .reset .sr-word.is-primary {font:500 var(--t-word)/1.2 var(--serif);letter-spacing:.01em;text-transform:none;}
+.sr-ui .settings .setting-reset {grid-template-columns:1fr;justify-items:center;align-items:center;margin-top:8px;padding-top:8px;text-align:center;}
+.sr-ui .settings .setting-reset > .setting-label {padding:0;}
+.sr-ui .settings-nav {display:flex;flex-direction:column;align-items:center;gap:0;margin-top:12px;}
+.sr-ui .settings-nav .back {margin:0;}
+@media(max-width:480px){
+  .sr-ui .settings .setting {grid-template-columns:minmax(0,.85fr) minmax(150px,1.15fr);column-gap:12px;}
+  .sr-ui .settings .setting-reset {grid-template-columns:1fr;}
+  .sr-ui .settings .setting-label {font-size:16px;}
+  .sr-ui .settings .sr-toggle > button {padding:0 6px;font-size:16px;}
+  .sr-ui .settings .sr-clear-scope > button {padding:0 4px;}
+}
+
+/* Over the drifting valley every word on the title screen is in near-black ink,
+   lifted off the painting by a soft paper glow (no box, no hard outline). */
+.sr-ui .menu :is(.title, .lockup, .tagline, .entry-label, .entry-sub, .menu-card .tagline, .menu-review-entry) {
+  color: #121a16;
+  opacity: 1;
+  text-shadow: 0 0 6px rgba(246, 241, 228, 0.95), 0 0 14px rgba(246, 241, 228, 0.8), 0 0 26px rgba(246, 241, 228, 0.55);
+}
+.sr-ui .menu .entry-label { font-weight: 600; }
+/* The line under an entry is the same ink, a shade lighter. */
+.sr-ui .menu .entry-sub { font-weight: 500; color: #46524c; }
+
+/* The hotkey list is small type over a busy landscape: a fuller ivory wash behind it, and near-black ink. */
+.sr-ui .menu[data-view='hotkeys'] .menu-card::before {
+  background:linear-gradient(90deg,#f0e7d200,#f0e7d2b3 14%,#f0e7d2eb 50%,#f0e7d2b3 86%,#f0e7d200);
+}
+.sr-ui .hotkey-list { font-size: 17px; }
+.sr-ui .hotkey-list dt, .sr-ui .hotkey-list dd { color: #18221d; }
+.sr-ui .hotkey-list dd { font-weight: 500; }
+@media (max-width: 760px) { .sr-ui .hotkey-list { font-size: 15px; } }
+
+/* These are controls over the valley, not selectable document text. */
+.sr-ui .menu { -webkit-user-select: none; user-select: none; }
+
+/* How to play: five steps, each beside a small piece of the game's own ink. */
+.sr-ui .settings.howto { width: min(600px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 190px); overflow-y: auto; overscroll-behavior: contain; box-sizing: border-box; padding: 18px 28px 16px; background: #f4eede; border: 4px solid #7a806c; border-radius: 9px; box-shadow: 0 16px 60px #18251e40; text-shadow: none; }
+.sr-ui .settings.howto .view-title { margin-top: 0; }
+.sr-ui .howto-steps { list-style: none; margin: 4px 0 18px; padding: 0; display: grid; gap: 14px; text-align: left; counter-reset: howto; }
+.sr-ui .howto-step { display: grid; grid-template-columns: 168px minmax(0, 1fr); align-items: center; gap: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--rule-soft, rgba(60, 70, 55, .15)); }
+.sr-ui .howto-step:last-child { border-bottom: 0; padding-bottom: 0; }
+.sr-ui .howto-visual { display: flex; justify-content: center; }
+.sr-ui .howto-words h3 { margin: 0 0 2px; font-size: 18px; font-weight: 600; color: var(--green-ink); }
+.sr-ui .howto-words h3::before { counter-increment: howto; content: counter(howto) '. '; color: var(--green-ink-soft); font-weight: 500; }
+.sr-ui .howto-words p { margin: 0; font-size: 15px; line-height: 1.4; color: var(--green-ink); }
+.sr-ui .howto-ink { display: inline-grid; place-items: center; color: var(--green-ink); }
+.sr-ui .howto-ink svg { display: block; }
+.sr-ui .howto-faces { display: inline-flex; gap: 2px; }
+.sr-ui .howto-faces > span { display: block; line-height: 0; }
+.sr-ui .howto-place { display: inline-flex; align-items: center; gap: 6px; font-size: 17px; color: var(--green-ink); }
+.sr-ui .howto-place em { font-style: italic; text-shadow: var(--halo-ink); }
+.sr-ui .howto-note { display: inline-flex; align-items: center; gap: 7px; max-width: 168px; padding: 6px 10px; font-size: 13px; line-height: 1.25; font-style: italic; color: var(--green-ink); background: rgba(243, 237, 219, .95); border-radius: 4px 9px 5px 8px; box-shadow: 0 2px 8px rgba(45, 53, 35, .12); }
+.sr-ui .howto-note small { color: var(--green-ink-soft); }
+.sr-ui .howto-stores { display: inline-flex; align-items: center; gap: 5px; font-size: 18px; color: var(--green-ink); }
+.sr-ui .howto-stores b { font-weight: 500; margin-right: 8px; }
+.sr-ui .howto-stamp { display: inline-block; padding: 9px 16px; font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #f4eede; background: #24342b; border-radius: 4px; }
+@media (max-width: 760px) {
+  .sr-ui .settings.howto { padding: 14px 16px 12px; max-height: calc(100dvh - 150px); }
+  .sr-ui .howto-step { grid-template-columns: 1fr; gap: 6px; justify-items: center; text-align: center; }
+  .sr-ui .howto-words h3 { font-size: 16px; }
+  .sr-ui .howto-words p { font-size: 14px; }
+}
+.sr-ui .howto-after { margin: 0 0 12px; font-size: 14px; font-style: italic; color: var(--green-ink-soft); text-align: center; }
+
+/* The logo curve is the menu's focus mark; native text underlines spread
+   through both lines of an entry and can remain after a pointer click. */
+.sr-ui .menu .entry,
+.sr-ui .menu .entry * {
+  text-decoration: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

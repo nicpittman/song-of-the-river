@@ -1,0 +1,156 @@
+/*
+ * The notebook map grows: a newly reached region inks itself in (see
+ * `Board.inkIn` in src/ui/notebook/board.ts). The paper unrolls downstream,
+ * the river's banks come first and its wash after, places are set down as the
+ * paper reaches them and their names are written in, and the group's pins
+ * at the new camp come last. Total about 3 s (INK_MS). `--ink-skip` is a
+ * negative delay, so a re-render part-way carries on where the ink had got to.
+ * `--ink-y` is a place's depth within the region, 0 at the top, 1 at the foot.
+ */
+
+.sr-ui .nb-section.is-inking {
+  --ink-unroll: 1500ms;
+  animation: nb-ink-unroll var(--ink-unroll) cubic-bezier(0.35, 0.1, 0.3, 1) backwards;
+  animation-delay: var(--ink-skip, 0ms);
+}
+
+@keyframes nb-ink-unroll {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* The rolled edge of the paper, travelling down with the unroll and settling flat. */
+.sr-ui .nb-section.is-inking::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 16px;
+  top: -16px;
+  pointer-events: none;
+  z-index: 5;
+  background: linear-gradient(to bottom, rgba(70, 60, 40, 0), rgba(70, 60, 40, 0.1) 45%, rgba(252, 248, 236, 0.95) 70%, rgba(70, 60, 40, 0.16));
+  border-radius: 0 0 50% 50% / 0 0 6px 6px;
+  opacity: 0;
+  animation: nb-ink-roll var(--ink-unroll) cubic-bezier(0.35, 0.1, 0.3, 1) backwards;
+  animation-delay: var(--ink-skip, 0ms);
+}
+
+@keyframes nb-ink-roll {
+  0% {
+    top: -16px;
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 16px);
+    opacity: 0;
+  }
+}
+
+/* The wash of the water, woods and sea fills in behind the inked banks. */
+.sr-ui .nb-section.is-inking .nb-chart :is(.ch-water, .ch-wood, .ch-sea, .ch-tree) {
+  animation: nb-ink-wash 1300ms ease-out backwards;
+  animation-delay: calc(var(--ink-skip, 0ms) + 450ms);
+}
+
+@keyframes nb-ink-wash {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Each place is set down as the paper reaches it, with a small press of the pen. */
+.sr-ui .nb-section.is-inking .nb-place {
+  animation: nb-ink-mark 560ms cubic-bezier(0.2, 0.9, 0.3, 1.25) backwards;
+  animation-delay: calc(var(--ink-skip, 0ms) + 260ms + var(--ink-y, 1) * 1250ms);
+}
+
+@keyframes nb-ink-mark {
+  from {
+    opacity: 0;
+    scale: 0.45;
+  }
+}
+
+/* Then its name is written in, left to right. */
+.sr-ui .nb-section.is-inking .nb-place-name {
+  animation: nb-ink-write 760ms ease-out backwards;
+  animation-delay: calc(var(--ink-skip, 0ms) + 520ms + var(--ink-y, 1) * 1250ms);
+}
+
+@keyframes nb-ink-write {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* The new home's ring is drawn round it in one stroke. */
+.sr-ui .nb-section.is-inking .nb-place.is-settlement .m-town {
+  stroke-dasharray: 73;
+  animation: nb-ink-ring 900ms ease-in-out backwards;
+  animation-delay: calc(var(--ink-skip, 0ms) + 380ms + var(--ink-y, 1) * 1250ms);
+}
+
+@keyframes nb-ink-ring {
+  from {
+    stroke-dashoffset: 73;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Last, the group's pins at the new camp, and any built marks. */
+.sr-ui .nb-section.is-inking :is(.nb-board-token, .nb-project-mark) {
+  animation: nb-ink-pin 520ms ease-out backwards;
+  animation-delay: calc(var(--ink-skip, 0ms) + 2000ms);
+}
+
+@keyframes nb-ink-pin {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+
+/* The paper mist moves down to the foot of the new region once it has inked in. */
+.sr-ui .nb-mist.is-inking-mist {
+  animation: nb-ink-wash 900ms ease-out backwards;
+  animation-delay: calc(var(--ink-skip, 0ms) + 1400ms);
+}
+
+/* Reduced motion: no unroll and no drawn lines, only one short crossfade. */
+.sr-ui .nb-section.is-inking.is-inking-quiet,
+.sr-ui .nb-section.is-inking.is-inking-quiet * {
+  animation: none !important;
+}
+
+.sr-ui .nb-section.is-inking.is-inking-quiet {
+  animation: nb-ink-wash 320ms ease-out backwards !important;
+  animation-delay: var(--ink-skip, 0ms) !important;
+}
+
+.sr-ui .nb-section.is-inking.is-inking-quiet::after {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sr-ui .nb-section.is-inking * ,
+  .sr-ui .nb-section.is-inking::after {
+    animation: none !important;
+  }
+
+  .sr-ui .nb-section.is-inking {
+    animation: nb-ink-wash 320ms ease-out backwards !important;
+  }
+}

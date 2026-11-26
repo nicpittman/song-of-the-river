@@ -1,0 +1,16 @@
+{
+  "name": "Song of the River",
+  "short_name": "Song of the River",
+  "description": "An adventure down a winding river, through shifting seasons, to a distant sea.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#ddd5be",
+  "theme_color": "#ddd5be",
+  "icons": [
+    { "src": "art/brand/favicon-128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "art/brand/favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "art/brand/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

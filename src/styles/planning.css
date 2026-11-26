@@ -1,0 +1,191 @@
+/* Today: place-first decisions on the left, people and the map on the right.
+   Scoped here so the rest of the notebook keeps its existing page design. */
+.sr-ui .nb-book[data-page='today'] .nb-today { height: 100%; min-height: 0; overflow: hidden; }
+.sr-ui .nb-book[data-page='today'] .nb-today-left { display: flex; flex-direction: column; }
+.sr-ui .nb-book[data-page='today'] .nb-today-left > .nb-shelf { display: block; flex: none; padding: 18px 24px 8px; }
+.sr-ui .nb-book[data-page='today'] .nb-today-left > .nb-board-wrap { display: block; position: relative; flex: 1; min-height: 0; margin: 0 18px 20px; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--ivory); }
+.sr-ui .nb-book[data-page='today'] .nb-today-right { display: flex; flex-direction: column; }
+.sr-ui .nb-book[data-page='today'] .nb-today-right > .nb-leaf-top { flex: none; min-height: 0; overflow: visible; padding: 24px 28px 10px; }
+.sr-ui .nb-book[data-page='today'] .nb-leaf-head { padding: 0; }
+.sr-ui .nb-book[data-page='today'] .nb-river { margin-top: 10px; padding: 10px 0; gap: 6px 12px; }
+.sr-ui .nb-book[data-page='today'] .nb-river-drawing svg { width: 90px; height: auto; }
+.sr-ui .nb-book[data-page='today'] .nb-river-today { font-size: 16px; }
+.sr-ui .nb-book[data-page='today'] .nb-river-tomorrow, .sr-ui .nb-book[data-page='today'] .nb-river-line { font-size: 14px; }
+.sr-ui .nb-book[data-page='today'] .nb-river-today .nb-caps,
+.sr-ui .nb-book[data-page='today'] .nb-river-tomorrow .nb-caps { min-width: 60px; font-size: 10px; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-body { flex: 1; min-height: 0; margin: 0 28px; overflow-x: hidden; overflow-y: auto; scrollbar-width: thin; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-suggestions { height: 100%; overflow-y: auto; overscroll-behavior: contain; padding: 12px 0; box-sizing: border-box; }
+.sr-ui .nb-book[data-page='today'] .nb-suggested-places { margin-top: 12px; }
+.sr-ui .nb-book[data-page='today'] .nb-suggested-places li { display: flex; flex-direction: column; align-items: flex-start; padding: 7px 0 12px; border-bottom: 1px solid var(--nb-edge); }
+.sr-ui .nb-book[data-page='today'] .nb-suggestion-link { min-height: 30px; font-size: 20px; }
+.sr-ui .nb-book[data-page='today'] .nb-suggested-places li > span { color: var(--green-ink-soft); font-size: 14px; font-style: italic; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-detail { position: relative; flex: none; height: 100%; max-height: none; margin: 0; overflow: hidden; border-top: 1px solid var(--nb-edge); }
+.sr-ui .nb-book[data-page='today'] .nb-plan-detail:empty { display: none; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-detail > .nb-slip { height: 100%; padding: 14px 0 0; display: flex; flex-direction: column; overflow: hidden; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-head { flex: none; padding-right: 30px; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-name { font-size: 24px; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-known { display: block; font-size: 14px; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-top: 10px; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-go { flex: none; min-height: 52px; padding: 8px 0; margin-top: 0; background: transparent; border-top: 1px solid var(--nb-edge); }
+.sr-ui .nb-book[data-page='today'] .nb-slip-go .nb-stamp { min-height: 44px; padding: 8px 16px; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-chance { margin: 8px 0; font-size: 18px; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-reasons { margin: 6px 0; font-size: 16px; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-choices { margin: 10px 0 4px; flex-wrap: wrap; overflow: visible; white-space: normal; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-with { font-size: 12px; padding: 0 4px; }
+.sr-ui .nb-book[data-page='today'] .nb-selected-person { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; font-size: 17px; }
+.sr-ui .nb-book[data-page='today'] .nb-selected-fit { font-size: 12px; color: var(--green-ink-soft); font-style: italic; }
+.sr-ui .nb-book[data-page='today'] .nb-selected-home { flex: 1; min-width: 170px; font-size: 14px; color: var(--green-ink-soft); }
+.sr-ui .nb-book[data-page='today'] .nb-plan-people { display: flex; flex-basis: 100%; gap: 10px; flex-wrap: wrap; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-person { display: grid; justify-items: center; align-content: start; gap: 4px; min-width: 52px; min-height: 78px; background: none; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-person-name { font-size: 16px; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-person small { min-height: 15px; font-size: 12px; color: var(--green-ink-soft); font-style: italic; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-person.is-selected .nb-plan-person-name { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-person.is-selected .nb-token { border-width: 2.5px; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-person:focus-visible { outline: none; }
+.sr-ui .nb-book[data-page='today'] .nb-plan-person:focus-visible .nb-token { outline: 1px solid var(--friend); outline-offset: 2px; }
+.sr-ui .nb-book[data-page='today'] .nb-selected-rest { min-height: 30px; font-size: 12px; }
+.sr-ui .nb-book[data-page='today'] .nb-make-slot { display: none; }
+.sr-ui .nb-book[data-page='today'] .has-decision .nb-plan-suggestions,
+.sr-ui .nb-book[data-page='today'] .is-making .nb-plan-suggestions,
+.sr-ui .nb-book[data-page='today'] .is-making .nb-plan-detail { display: none; }
+.sr-ui .nb-book[data-page='today'] .is-making .nb-make-slot { display: block; height: 100%; overflow-y: auto; }
+.sr-ui .nb-book[data-page='today'] .nb-base-options { position: relative; padding: 20px 0; box-sizing: border-box; }
+.sr-ui .nb-book[data-page='today'] .nb-morning-foot { flex: none; padding: 8px 28px; margin-top: 0; font-size: 13px; }
+.sr-ui .nb-book[data-page='today'] .nb-today-foot { flex: none; min-height: 52px; padding: 4px 28px 18px; gap: 12px; }
+.sr-ui .nb-book[data-page='today'] .nb-today-foot:empty { display: none; }
+.sr-ui .nb-book[data-page='today'] .nb-today-foot .nb-begin-note { flex: 1; font-size: 13px; max-width: none; text-align: left; }
+.sr-ui .nb-book[data-page='today'] .nb-today-foot .nb-stamp { font-size: 11px; padding: 0 14px; }
+.sr-ui .nb-book[data-page='today'] .nb-camp-row { display: grid; grid-template-columns: repeat(var(--people-count, 3), minmax(0, 1fr)); gap: 4px; margin: 6px 0 0; overflow: visible; }
+.sr-ui .nb-book[data-page='today'] .nb-camper { width: 100%; min-width: 0; max-width: none; min-height: 98px; padding: 7px 2px 2px; gap: 4px; }
+.sr-ui .nb-book[data-page='today'] .nb-camper-status { min-height: 28px; font-size: 12px; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.sr-ui .nb-book[data-page='today'] .nb-camper-name { font-size: 16px; }
+.sr-ui .nb-book[data-page='today'] .nb-camp-home { font-size: 13px; font-style: italic; color: var(--green-ink-soft); }
+.sr-ui .nb-book[data-page='today'] .nb-camper.is-recommended .nb-token { box-shadow: 0 0 0 3px var(--wash-straw); }
+.sr-ui .nb-book[data-page='today'] .nb-camper.is-lifted,
+.sr-ui .nb-book[data-page='today'] button.nb-camper:hover { background: none; }
+.sr-ui .nb-book[data-page='today'] .nb-camper.is-lifted .nb-camper-name { font-weight: 700; }
+.sr-ui .nb-book[data-page='today'] .nb-camper:focus-visible { outline: none; }
+.sr-ui .nb-book[data-page='today'] .nb-camper:focus-visible .nb-token { outline: 1px solid var(--friend); outline-offset: 2px; }
+.sr-ui .nb-book[data-page='today'] .nb-board-wrap .nb-board { bottom: 24px; }
+.sr-ui .nb-book[data-page='today'] .nb-map-legend { position: absolute; bottom: 3px; right: 12px; font-size: 12px; color: var(--green-ink-soft); pointer-events: none; }
+
+/* Knowing a place and selecting it are separate, persistent map states. */
+.sr-ui .nb .nb-map-name-line { display: block; }
+.sr-ui .nb .nb-place.is-second-option .nb-place-ring { border: 1px solid var(--teal); background: rgba(155, 190, 186, .16); }
+.sr-ui .nb .nb-second-activities { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 5px 0; }
+.sr-ui .nb .nb-second-hint { margin: 6px 0; font-size: 14px; font-style: italic; color: var(--green-ink); }
+.sr-ui .nb .nb-place.is-visited .nb-place-ring { border-style: solid; }
+.sr-ui .nb .nb-visited-tick { position: absolute; left: 27px; top: 26px; font-size: 11px; font-weight: 600; line-height: 1; background: var(--ivory); border-radius: 50%; padding: 1px; pointer-events: none; }
+.sr-ui .nb .nb-place.is-selected[aria-pressed='true'] .nb-place-ring { border: 1px solid rgba(145, 125, 69, .4); background: radial-gradient(circle, #fff6d6 0%, #e6d7a880 60%, transparent 75%); box-shadow: 0 0 9px 6px #e6d7a875; }
+.sr-ui .nb .nb-place.is-selected .nb-place-name { font-weight: 700; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; opacity: 1; }
+.sr-ui .nb .nb-project-mark.is-selected { border: 1px solid #91804e80; box-shadow: 0 0 10px 6px #e6d7a875; }
+.sr-ui .nb .nb-place.is-unvisited:not(.is-settlement):not(.is-selected):not(.is-second-option) .nb-place-ring { border-color: transparent; }
+.sr-ui .nb .nb-place-condition { position: absolute; right: -7px; top: -8px; display: flex; }
+.sr-ui .nb .nb-place.is-visited .nb-visit-mark { stroke-width: 1.7; }
+.sr-ui .nb .nb-trail-arrow { fill: none; stroke: var(--friend); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
+.sr-ui .nb .nb-board[data-mode='leaf'] .nb-board-token { cursor: pointer; transform: translate(var(--pin-x), var(--pin-y)); transition: none; }
+
+@media (max-width: 760px) {
+  .sr-ui .nb-book[data-page='today'] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, auto) auto minmax(0, 1.3fr) minmax(0, 1fr) auto auto;
+    grid-template-areas: 'people' 'weather' 'forecast' 'departure' 'map' 'decision' 'resources' 'begin';
+    background: var(--ivory);
+  }
+  .sr-ui .nb-book[data-page='today'] .nb-page.is-left,
+  .sr-ui .nb-book[data-page='today'] .nb-page.is-right,
+  .sr-ui .nb-book[data-page='today'] .nb-today-left,
+  .sr-ui .nb-book[data-page='today'] .nb-today-right { display: contents; }
+  .sr-ui .nb-book[data-page='today'] .nb-today-left > .nb-shelf { grid-area: people; padding: 7px 10px 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-camp-head { padding: 0 24px 0 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-town { font-size: 12px; }
+  .sr-ui .nb-book[data-page='today'] .nb-camp-home { font-size: 10px; }
+  .sr-ui .nb-book[data-page='today'] .nb-camp-row { gap: 2px; margin-top: 2px; }
+  .sr-ui .nb-book[data-page='today'] .nb-camper { min-height: 85px; gap: 3px; }
+  .sr-ui .nb-book[data-page='today'] .nb-camper .nb-token { --size: 32px !important; }
+  .sr-ui .nb-book[data-page='today'] .nb-camper-name { font-size: 13px; }
+  .sr-ui .nb-book[data-page='today'] .nb-camper-status { font-size: 11px; min-height: 26px; }
+  .sr-ui .nb-book[data-page='today'] .nb-camper-where { font-size: 10px; }
+  .sr-ui .nb-book[data-page='today'] .nb-news-toggle { grid-area: weather; display: flex; min-height: 34px; padding: 4px 10px; border-top: 1px solid var(--nb-edge); }
+  .sr-ui .nb-book[data-page='today'] .nb-news-line { font-size: 13px; }
+  .sr-ui .nb-book[data-page='today'] .nb-news-more { font-size: 10px; }
+  .sr-ui .nb-book[data-page='today'] .nb-today-right > .nb-leaf-top { grid-area: forecast; display: none; padding: 0 10px; max-height: 110px; overflow-y: auto; }
+  .sr-ui .nb-book[data-page='today'] .nb-today-right.is-open > .nb-leaf-top { display: block; }
+  .sr-ui .nb-book[data-page='today'] .nb-departure-slot { grid-area: departure; }
+  .sr-ui .nb-book[data-page='today'] .nb-leaf-head { display: none; }
+  .sr-ui .nb-book[data-page='today'] .nb-river { margin: 0; padding: 6px 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-today-left > .nb-board-wrap { grid-area: map; flex: none; margin: 0 6px 4px; min-height: 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-plan-body { grid-area: decision; min-height: 0; margin: 0 10px; }
+  .sr-ui .nb-book[data-page='today'] .nb-plan-detail { height: 100%; max-height: none; margin: 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-plan-detail > .nb-slip { padding: 6px 0 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-slip-name { font-size: 19px; }
+  .sr-ui .nb-book[data-page='today'] .nb-slip-known { font-size: 12px; }
+  .sr-ui .nb-book[data-page='today'] .nb-slip-body { padding-top: 4px; }
+  .sr-ui .nb-book[data-page='today'] .nb-selected-person { font-size: 14px; }
+  .sr-ui .nb-book[data-page='today'] .nb-selected-home { font-size: 11px; }
+  .sr-ui .nb-book[data-page='today'] .nb-plan-people { gap: 5px; flex-wrap: nowrap; }
+  .sr-ui .nb-book[data-page='today'] .nb-plan-person { min-width: 0; flex: 1; min-height: 68px; gap: 2px; }
+  .sr-ui .nb-book[data-page='today'] .nb-plan-person-name { font-size: 13px; }
+  .sr-ui .nb-book[data-page='today'] .nb-plan-person small { font-size: 10px; }
+  .sr-ui .nb-book[data-page='today'] .nb-slip-chance { font-size: 15px; margin: 4px 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-slip-reasons { font-size: 13px; }
+  .sr-ui .nb-book[data-page='today'] .nb-slip-go { min-height: 42px; padding: 4px 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-slip-go .nb-stamp { min-height: 36px; padding: 5px 12px; font-size: 10px; }
+  .sr-ui .nb-book[data-page='today'] .nb-slip-go .nb-word { font-size: 12px; }
+  .sr-ui .nb-book[data-page='today'] .nb-plan-suggestions { padding: 4px 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-suggested-places { margin-top: 4px; }
+  .sr-ui .nb-book[data-page='today'] .nb-suggested-places li { padding: 2px 0 6px; }
+  .sr-ui .nb-book[data-page='today'] .nb-suggestion-link { font-size: 17px; min-height: 28px; }
+  .sr-ui .nb-book[data-page='today'] .nb-suggested-places li > span { font-size: 11px; }
+  .sr-ui .nb-book[data-page='today'] .nb-morning-foot { grid-area: resources; padding: 3px 10px; font-size: 12px; min-width: 0; }
+  .sr-ui .nb-book[data-page='today'] .nb-supplies-mark { min-height: 28px; font-size: 14px; }
+  .sr-ui .nb-book[data-page='today'] .nb-morning-foot .nb-word { min-height: 30px; font-size: 12px; }
+  .sr-ui .nb-book[data-page='today'] .nb-today-foot { grid-area: begin; padding: 2px 10px 6px; min-height: 42px; gap: 8px; }
+  .sr-ui .nb-book[data-page='today'] .nb-today-foot .nb-begin-note { font-size: 11px; }
+  .sr-ui .nb-book[data-page='today'] .nb-today-foot .nb-stamp { min-height: 38px; font-size: 10px; padding: 0 12px; }
+}
+
+/* One village action; the overnight/group options live in its scrolling body. */
+.sr-ui .nb-camp-choices { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 8px 0; }
+.sr-ui .nb-camp-choices .nb-overnight-option { margin: 0; }
+.sr-ui .nb-entry-conversation { margin-top: 10px; }
+.sr-ui .nb-entry-conversation summary { cursor: pointer; font-style: italic; }
+.sr-ui .nb-entry-conversation p { margin: 8px 0; }
+
+/* ---- Morning, slightly clearer (18 Nov) ---- */
+/* Keyboard hints are for keyboards: touch screens leave them out. */
+@media (hover: none), (pointer: coarse) {
+  .sr-ui .nb-keyhint,
+  .sr-ui .nb-person-key { display: none; }
+}
+/* How many are free is already plain from the row of people. */
+/* A place suggested for its supplies says what kind of place it is, quietly. */
+.sr-ui .nb-book[data-page='today'] .nb-suggested-places li > span.is-note { font-style: italic; color: var(--green-ink-soft); }
+/* The activity follows the person's gift; the other choices stay, quietly. */
+.sr-ui .nb-book[data-page='today'] .nb-slip-choices { gap: 2px 14px; margin: 6px 0 2px; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-choice:not(.is-item) { min-height: 28px; font-size: 14px; color: var(--green-ink-soft); text-decoration: none; border-bottom: 0; background: none; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-choice:not(.is-item).is-on { color: var(--green-ink); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.sr-ui .nb-book[data-page='today'] .nb-slip-choice:not(.is-item):hover { color: var(--green-ink); }
+/* Begin the day: quiet until there is a plan, then the one filled button on the page. */
+.sr-ui .nb-book[data-page='today'] .nb-today-foot .nb-stamp.is-ready { background: var(--green-ink); border-color: var(--green-ink); color: var(--ivory); }
+.sr-ui .nb-book[data-page='today'] .nb-today-foot .nb-stamp.is-ready:hover { background: var(--green-ink-soft); }
+.sr-ui .nb .nb-voyager:disabled.is-on { opacity: 1; cursor: default; }
+.sr-ui .nb .nb-aki-promise { padding: 8px 0 12px; margin-bottom: 12px; border-bottom: 1px solid var(--nb-edge); }
+.sr-ui .nb .nb-aki-promise p { margin: 5px 0; color: var(--green-ink); font-size: 16px; line-height: 1.35; }
+.sr-ui .nb .nb-aki-promise button { min-height: 36px; }
+.sr-ui .nb .nb-begin-heading { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.sr-ui .nb .nb-plan-undo { display: inline-flex; align-items: center; gap: 4px; min-height: 30px; padding: 0 2px; border: 0; background: none; box-shadow: none; font: italic 14px/1.2 'Cormorant Garamond', serif; color: var(--green-ink); }
+.sr-ui .nb .nb-plan-undo svg { width: 18px; height: 18px; }
+.sr-ui .nb .nb-plan-undo:disabled { opacity: .35; cursor: default; }
+.sr-ui .nb .nb-plan-undo:not(:disabled):hover { text-decoration: underline; text-underline-offset: 3px; }
+@media (pointer: coarse) { .sr-ui .nb .nb-plan-undo { min-height: 44px; } }
+/* Optional route notes read differently from the companions' actual positions. */
+.sr-ui .nb .nb-stop-hints { position: absolute; z-index: 4; display: flex; width: max-content; transform: translate(var(--stop-x, 0px), var(--stop-y, -44px)); }
+.sr-ui .nb .nb-stop-hints[hidden] { display: none; }
+.sr-ui .nb .nb-stop-hint { position: relative; display: inline-flex; align-items: center; gap: 3px; min-height: 30px; margin: 0; padding: 0 3px; border: 0; background: transparent; box-shadow: none; color: #66716b; font: italic 14px/1.2 'Cormorant Garamond', serif; white-space: nowrap; cursor: pointer; }
+.sr-ui .nb .nb-stop-hint-arrow { flex: none; width: 17px; height: 17px; }
+.sr-ui .nb .nb-stop-hint-label { pointer-events: none; }
+.sr-ui .nb .nb-stop-hint:is(:hover, :focus-visible) { color: var(--green-ink); }
+.sr-ui .nb .nb-stop-hint:is(:hover, :focus-visible) .nb-stop-hint-label { text-decoration: underline; text-underline-offset: 3px; }
+@media (pointer: coarse) { .sr-ui .nb .nb-stop-hint { min-height: 44px; } }

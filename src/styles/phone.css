@@ -1,0 +1,679 @@
+/*
+ * Phone pass (18 Nov): readable type and fingertip-sized controls on small
+ * screens. Loaded last (from main.ts) so it can lift the sizes the earlier
+ * phone rules shrank to fit. Rules of thumb here:
+ *   body and notes ≥ 15px, small capitals ≥ 12px, anything pressable ≥ 44px.
+ */
+
+/* Touch screens have no keyboard: the hotkey list stays a desktop thing. */
+@media (hover: none) and (pointer: coarse) {
+  .sr-ui .sr-hotkeys { display: none; }
+}
+
+/* The evening report scrolls: its last line (the tally) used to sit a few px past the edge, cut through
+   the descenders. A little room at the end and a soft fade make "more below" read as paper, not a clip. */
+.sr-ui .nb .nb-evening-scroll { padding-bottom: 16px; }
+/* Only while something is hidden below (see scrollCue.ts) does the foot fade, with a small cue over it. */
+.sr-ui .nb .nb-evening-scroll.has-more { mask-image: linear-gradient(#000 calc(100% - 52px), transparent); -webkit-mask-image: linear-gradient(#000 calc(100% - 52px), transparent); }
+
+@media (max-width: 760px) {
+  /* ---- The season clock ---- */
+  .sr-ui .clock-when { font-size: 11.5px; letter-spacing: .1em; }
+
+  /* ---- Book tabs ---- */
+  .sr-ui .nb-book-tab-word { font-size: 11.5px; letter-spacing: .05em; }
+  .sr-ui .nb .nb-caps { font-size: 12.5px; }
+  .sr-ui .nb .nb-close { min-width: 44px; min-height: 44px; }
+  .sr-ui .nb .nb-slip-close { min-width: 44px; min-height: 44px; }
+  .sr-ui .nb .nb-stamp { min-height: 46px; font-size: 12.5px; letter-spacing: .14em; }
+  .sr-ui .nb .nb-word { min-height: 44px; }
+  .sr-ui .nb .nb-book-close { width: 44px; height: 44px; top: 2px; right: 2px; }
+
+  /* ---- Today (morning planning) ---- */
+  /* Let the map and the scrollable decision share the space left by the footers. */
+  .sr-ui .nb .nb-book[data-page='today']:has(.nb-today-right.has-decision),
+  .sr-ui .nb .nb-book[data-page='today']:has(.nb-today-right.is-making) {
+    grid-template-rows: auto auto minmax(0, auto) auto minmax(150px, .53fr) minmax(0, 1.47fr) auto auto;
+  }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; column-gap: 10px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp-head { grid-column: 1; padding: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp-home { grid-column: 2; margin: 0; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp-row { grid-column: 1 / -1; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper { min-height: 0; padding-top: 4px; gap: 2px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-town { font-size: 12.5px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp-home { font-size: 14px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper-name { font-size: 15px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper-status { font-size: 14px; line-height: 1.2; min-height: 34px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper-where { font-size: 14px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-news-toggle { min-height: 44px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-news-line { font-size: 16px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-news-more { font-size: 12px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-river-tomorrow,
+  .sr-ui .nb .nb-book[data-page='today'] .nb-river-line,
+  .sr-ui .nb .nb-book[data-page='today'] .nb-river-today { font-size: 15px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-river-today .nb-caps,
+  .sr-ui .nb .nb-book[data-page='today'] .nb-river-tomorrow .nb-caps { font-size: 12px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-suggestion-link { min-height: 44px; font-size: 19px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-suggested-person { min-height: 44px; font-size: 15px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-selected-rest { min-height: 44px; min-width: 44px; justify-content: flex-end; font-size: 15px; }
+  .sr-ui .nb .nb-slip-state span,
+  .sr-ui .nb .nb-slip-lead span { font-size: 15px; }
+  .sr-ui .nb .nb-place.is-settlement .nb-place-name { font-size: 14.5px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-suggested-places li > span { font-size: 15px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-prompt,
+  .sr-ui .nb .nb-book[data-page='today'] .nb-goal { font-size: 16px; }
+  /* The slip */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-name { font-size: 21px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-known { font-size: 14px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-note { font-size: 16px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-chance { font-size: 16px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-reasons,
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-reasons li,
+  .sr-ui .nb .nb-book[data-page='today'] .nb-length { font-size: 15px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-selected-person { font-size: 16px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-selected-home { font-size: 14px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-person-name { font-size: 15px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-person small { font-size: 13px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-choice:not(.is-item) { min-height: 44px; min-width: 44px; padding: 0 6px; font-size: 16px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-choices { gap: 0 8px; margin: 2px 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-go { min-height: 54px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-go .nb-stamp { min-height: 46px; padding: 0 16px; font-size: 12.5px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-go .nb-word { min-height: 44px; font-size: 15px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-with { font-size: 14px; }
+  .sr-ui .nb .nb-second-stop { font-size: 15px; }
+  /* Foot: supplies, Build & equipment, Begin */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-morning-foot { font-size: 14px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-supplies-mark { font-size: 16px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-morning-foot .nb-word { min-height: 44px; font-size: 15px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-foot { padding-bottom: 8px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-foot .nb-begin-note { font-size: 13.5px; line-height: 1.25; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-foot .nb-stamp { min-height: 46px; font-size: 12.5px; padding: 0 14px; }
+  .sr-ui .nb .nb-day-not-started { font-size: 15px; }
+  /* The notebook map: names stay legible, and the scale bar keeps clear of the places. */
+  .sr-ui .nb .nb-place-name { font-size: 15px; }
+  .sr-ui .nb .nb-map-scale { font-size: 12.5px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-map-legend { font-size: 13px; }
+  /* Build & equipment */
+  .sr-ui .nb .nb-make-supplies { font-size: 15px; }
+  .sr-ui .nb .nb-make-why,
+  .sr-ui .nb .nb-make-work { font-size: 15px; }
+  .sr-ui .nb .nb-make-cost { font-size: 12px; }
+
+  /* ---- Journal, Collections, People, River Map ---- */
+  .sr-ui .nb .nb-count-name { font-size: 13px; }
+  .sr-ui .nb .nb-count-n,
+  .sr-ui .nb .nb-cat-count { font-size: 15px; }
+  .sr-ui .nb .nb-group-role { font-size: 15px; }
+  .sr-ui .nb .nb-group-status { font-size: 15px; }
+  .sr-ui .nb .nb-atlas-key { font-size: 15px; gap: 6px 10px; padding: 10px 16px; }
+  .sr-ui .nb .nb-turn-count { font-size: 15px; }
+
+  /* ---- Evening ---- */
+  .sr-ui .nb .nb-eve-find-line { font-size: 15px; }
+  .sr-ui .nb .nb-day-index .nb-word { min-width: 44px; justify-content: center; }
+  .sr-ui .nb .nb-eve-actions .nb-word { min-height: 44px; }
+
+  /* ---- The day bar: everything fits in one line, nothing past the screen edge ---- */
+  .sr-ui .nb-bar { gap: 0; min-width: 0; }
+  .sr-ui .nb .nb-tab { flex: none; padding: 4px 8px; }
+  .sr-ui .nb .nb-group-row { flex: 1 1 auto; min-width: 0; padding: 0 2px; }
+  /* A large group folds into a fan of portraits rather than running off the screen;
+     the caret opens the full list with fingertip-sized rows. */
+  .sr-ui .nb .nb-group-person { flex: 0 1 30px; min-width: 16px; }
+  .sr-ui .nb .nb-group-person > * { flex: none; }
+  .sr-ui .nb-bar:has(.nb-group-person + .nb-group-person + .nb-group-person + .nb-group-person) .nb-bar-supplies { display: none; }
+  .sr-ui .nb .nb-group-details { width: 30px; min-height: 44px; }
+  .sr-ui .nb-bar-supplies { flex: none; padding: 0 4px; gap: 2px; }
+  .sr-ui .nb-controls { flex: none; }
+  .sr-ui .nb .nb-control { width: 44px; }
+
+  /* ---- Credits ---- */
+  .sr-ui .credits-page { padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left)); }
+  .sr-ui .credits-close { width: 44px; height: 44px; top: 6px; right: 6px; }
+  .sr-ui .credits-cutscene { min-height: 44px; }
+  .credits-record ul { font-size: 15px; }
+
+  /* ---- Main menu ---- */
+  .sr-ui .entry-sub { font-size: 15px; }
+  .sr-ui .sr-caps { font-size: 12.5px; }
+}
+
+/* Very narrow phones (≤ 360px): the day bar gives back a little more room. */
+@media (max-width: 370px) {
+  .sr-ui .nb .nb-tab { min-width: 40px; padding: 4px 4px; justify-content: center; }
+  .sr-ui .nb .nb-control { width: 40px; }
+  .sr-ui .nb-tabs { left: 6px; right: 6px; gap: 2px; }
+  .sr-ui .nb .nb-book-tab { flex: 1 1 auto; min-width: 0; padding: 0 2px; }
+  .sr-ui .nb-book-tab-word { font-size: 11px; letter-spacing: .03em; white-space: normal; text-align: center; }
+}
+
+/* Phones held sideways (short landscape): usable, if not the primary design. The page tabs down the
+   book's edge used to run past the foot of the screen (Collections, People and River Map unreachable);
+   they now share the book's height. */
+@media (max-height: 560px) and (min-width: 761px) {
+  .sr-ui .nb-tabs { top: 6px; bottom: 6px; gap: 2px; }
+  .sr-ui .nb .nb-book-tab { flex: 1 1 0; min-height: 0; padding: 2px 0; overflow: hidden; }
+  .sr-ui .nb-book-tab-word { font-size: 10px; letter-spacing: .03em; }
+  .sr-ui .nb-news-toggle { gap: 10px; }
+  .sr-ui .nb .nb-book-close { width: 44px; height: 44px; }
+}
+
+/* Phone notebook map (reveal pass, 18 Nov). */
+@media (max-width: 760px) {
+  /* The reach switcher leaves the map's top-right (it covered places there) for the legend line below it. */
+  .sr-ui .nb .nb-board-wrap .nb-stepper { top: auto; bottom: -8px; left: 2px; right: auto; gap: 2px; padding: 0; background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .sr-ui .nb .nb-board-wrap .nb-stepper .nb-step { font-size: 14.5px; padding: 0 5px; }
+  .sr-ui .nb .nb-board-wrap:has(.nb-stepper.has-regions) .nb-map-scale { display: none; }
+  /* With a slip open the people row drops its status line. */
+  .sr-ui .nb .nb-book[data-page='today']:has(.nb-today-right.has-decision) .nb-camper-status { display: none; }
+  /* The reasons keep their own height (they used to shrink to nothing and slide under Send); the body scrolls instead. */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail .nb-slip-reasons { flex: none; min-height: auto; overflow: visible; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail .nb-slip-go { background: var(--ivory); }
+  /* "More below" reads as paper fading out above Send, not a line cut through its letters. */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail .nb-slip-body { padding-bottom: 14px; }
+  /* The slip's "Special today" line is never cut: it takes its own height and the slip's body scrolls instead. */
+  .sr-ui .nb .nb-plan-detail .nb-slip-state { max-height: none; overflow: visible; flex-shrink: 0; }
+}
+@media (max-width: 760px) and (max-height: 740px) {
+  /* A destination has its own action. Keep Begin visible if a plan is already ready. */
+  .sr-ui .nb .nb-book[data-page='today']:has(.nb-slip-go .nb-stamp):not(:has(.nb-today-right.is-making))
+  .nb-today-foot:has(.nb-stamp[aria-disabled='true']) { display: none; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail > .nb-slip {
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+  }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-body {
+    flex: 1 0 auto;
+    overflow: visible;
+  }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-slip-go {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    background: var(--ivory);
+  }
+}
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-book[data-page='today']:has(.nb-today-right.has-decision) .nb-map-scale { display: none; }
+}
+
+/* Finishing pass: quiet map navigation and grouped evening returns. */
+/* Wider screens: the reach switcher sits at the foot of the map, opposite the zoom, as on a phone,
+   clear of the portraits above; the walking scale it shares the corner with steps aside. */
+@media (min-width: 761px) {
+  .sr-ui .nb .nb-board-wrap .nb-stepper { top:auto; bottom:6px; left:14px; right:auto; padding:0; gap:14px; border:0; border-radius:0; background:none; box-shadow:none; backdrop-filter:none; }
+  .sr-ui .nb .nb-board-wrap:has(.nb-stepper.has-regions) .nb-map-scale { display: none; }
+  .sr-ui .nb .nb-board-wrap .nb-stepper .nb-step { padding:3px 0; font-size:16px; color:var(--green-ink-soft); }
+}
+.sr-ui .nb .nb-board-wrap .nb-stepper .nb-step { color:var(--green-ink-soft); }
+.sr-ui .nb .nb-eve-person-head { display:flex; gap:12px; align-items:center; padding:14px 0 8px; }
+.nb-eve-person-head > div { display:flex; flex-direction:column; }
+.nb-eve-person-head strong { font-size:24px; font-weight:600; }
+.nb-eve-person-gains { margin-left:auto; display:flex; align-items:center; gap:5px; white-space:nowrap; }
+.nb-eve-traveller { border-bottom:1px solid var(--nb-edge); padding-bottom:12px; }
+.nb-eve-traveller .nb-eve-finds { margin:0; padding-left:48px; }
+.nb-eve-traveller .nb-eve-find { border:0; padding:6px 0; }
+.nb-eve-person-voice { margin:4px 0 0 48px; font-style:italic; }
+.nb-friend-traits { color:var(--green-ink-soft); font-size:18px; }
+@media(max-width: 760px) { .sr-ui .nb .nb-board-wrap .nb-stepper .nb-step { font-size:14px; } .nb-eve-person-head strong {font-size:21px;} }
+
+.nb-next-reach { position:absolute; top:18px; right:18%; border:0; background:none; color:var(--green-ink); font:inherit; font-size:22px; text-decoration:underline; text-underline-offset:6px; cursor:pointer; }
+.review-menu {display:flex;flex-direction:column;gap:12px;max-height:65dvh;overflow:auto;}
+
+/* The chapter destination uses the same ink settlement pin as every other place. */
+.sr-ui .nb-place.is-journey-gate { z-index: 4; color: var(--ink); }
+.sr-ui .nb-gate-name { position:absolute; left:22px; top:50%; transform:translateY(-50%); white-space:nowrap; font-size:1.15rem; letter-spacing:.04em; }
+.sr-ui .nb-place.is-journey-gate .nb-place-ring { border-style:dashed; }
+.sr-ui .is-next-morning .nb-spread.is-open:not(.is-closing) { opacity:1; transform:none; pointer-events:auto; }
+
+.sr-ui .nb-daylight {display:inline-flex; align-items:center; margin-left:6px; color:var(--ink);}
+.sr-ui .nb-daylight svg {display:block; overflow:visible; fill:none; stroke:currentColor; stroke-width:1.1; stroke-linecap:round;}
+.sr-ui .nb-sun-track {opacity:.45;}
+.sr-ui .nb-travelling-sun circle {fill:#e3d6a3;}
+.sr-ui .nb.is-next-morning .nb-spread.is-open:not(.is-closing) {opacity:1;}
+.sr-ui .nb-mist .is-journey-gate {transform:translate(-50%,-50%); opacity:1; z-index:5;}
+.sr-ui .nb-gate-name {position:absolute; left:22px; top:50%; transform:translateY(-50%); font-size:18px; white-space:nowrap;}
+.sr-ui .nb-mist .is-journey-gate:hover .nb-gate-name, .sr-ui .nb-mist .is-journey-gate:focus-visible .nb-gate-name {text-decoration:underline;}
+@media(max-width:520px){.sr-ui .nb-daylight svg{width:52px;} .sr-ui .nb-daylight{margin-left:0;}}
+
+.sr-ui .nb-daylight svg {width:74px; height:20px;}
+.sr-ui .nb-plan-suggestions > .nb-quiet {display:inline-block; margin-right:24px; margin-top:12px;}
+.sr-ui .nb-plan-suggestions > .nb-caps {display:block; margin-bottom:10px;}
+.sr-ui .nb-voyage-caption {pointer-events:none;}
+.sr-ui .nb-voyage-caption button {pointer-events:auto;}
+@media(max-width:520px){.sr-ui .nb-daylight svg{width:52px;}}
+
+.sr-ui .nb-eve-traveller.is-standout {border-left:2px solid var(--green-ink-faint); padding-left:16px;}
+.sr-ui .nb-eve-person-story {font-size:19px; line-height:1.4; margin:8px 0 12px; color:var(--green-ink-soft);}
+.sr-ui .nb-eve-person-kicker {margin:8px 0;}
+.sr-ui .nb-eve-standout {margin:2px 0 8px;}
+.sr-ui .nb-eve-standout .nb-eve-person-kicker {display:block; margin:4px 0 2px; color:#8d684a;}
+.sr-ui .nb .nb-eve-standout-title {margin:0; font-size:21px; font-weight:500; line-height:1.2; color:var(--green-ink);}
+.sr-ui .nb-eve-standout .nb-eve-person-story {margin:6px 0 4px; font-size:17px; font-style:italic;}
+.sr-ui .nb-eve-standout-outcome {margin:4px 0 0; font-size:16px; font-weight:600; color:var(--green-ink);}
+.sr-ui .nb-day-end-words > .nb-caps {display:block; margin-top:2px; color:#8d684a;}
+
+.sr-ui .menu-review-entry {display:inline-flex; align-items:center; gap:7px; font-size:15px; color:var(--green-ink-soft); margin-top:6px;}
+.sr-ui .menu-review-entry span {display:inline-flex;}
+
+/* Fixed journal furniture: only the account scrolls; scrollbar space is reserved. */
+.sr-ui .nb .nb-page-body.is-evening-page {grid-template-rows:auto minmax(0,1fr) auto;}
+.sr-ui .nb .is-evening-page > .nb-eve-head {margin:0; min-height:30px; flex-shrink:0;}
+.sr-ui .nb .nb-day-index {display:flex; gap:16px; flex:0 0 92px; justify-content:space-between;}
+.sr-ui .nb .nb-day-arrow {width:36px; height:36px; padding:0; flex:none;}
+.sr-ui .nb .nb-evening-scroll {scrollbar-gutter:stable;}
+.sr-ui .clock-tab > .nb-daylight {display:flex; justify-content:center; margin:-2px auto 0; height:16px;}
+.sr-ui .clock-tab > .nb-daylight svg {width:116px; height:16px;}
+.sr-ui .opening-line {background:rgba(239,233,216,.94); border-radius:2px 14px 4px 10px; box-shadow:0 2px 6px #24362e12; padding:22px 32px;}
+.sr-ui .opening {align-items:center; padding-bottom:0; padding-top:22vh;}
+.sr-ui .nb-book {position:relative;}
+.sr-ui .nb-collection-finished {margin:18px 0; padding:14px 0; border-block:1px solid var(--nb-edge);}
+.sr-ui .nb-collection-finished h3 {font-size:24px;margin:6px 0;}
+.sr-ui .nb-collection-finished p {font-size:16px; font-style:italic;}
+.sr-ui .nb-collection-sketches {display:flex; gap:16px; margin:12px 0;}
+
+.sr-ui .opening-line {background:linear-gradient(90deg,rgba(244,238,222,0),rgba(244,238,222,.92) 42px,rgba(244,238,222,.95) 50%,rgba(244,238,222,.92) calc(100% - 42px),rgba(244,238,222,0)); border-radius:3px;box-shadow:none;padding:20px 52px;}
+.sr-ui .nb-collection-sketches svg {animation:nb-collection-ink 900ms ease-out both;}
+@keyframes nb-collection-ink {from{opacity:0;transform:translateY(3px);}to{opacity:1;transform:none;}}
+.sr-ui.is-reduced .nb-collection-sketches svg {animation:none;}
+@media(prefers-reduced-motion:reduce){.sr-ui .nb-collection-sketches svg{animation:none;}}
+
+/* The same quiet paper treatment for departures, speech and arrivals: one surface. */
+.sr-ui .nb .nb-voyage-caption {
+  left:50%; right:auto; top:auto; bottom:28%; transform:translateX(-50%);
+  width:max-content; max-width:min(560px,calc(100vw - 32px)); box-sizing:border-box;
+  top:auto;bottom:28%;left:50%;right:auto;width:max-content;transform:translateX(-50%);
+  padding:14px 48px; gap:7px; border:0; border-radius:3px; box-shadow:none;
+  background:linear-gradient(90deg,#f4eede00,#f4eedeeb 32px,#f4eedef2 50%,#f4eedeeb calc(100% - 32px),#f4eede00);
+}
+.sr-ui .nb .nb-voyage-caption .nb-voyage-line,
+.sr-ui .nb .nb-voyage-caption .nb-voyage-reach {
+  max-width:100%; padding:0; margin:0; background:none; border:0; border-radius:0;
+  box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; text-shadow:none;
+  text-align:center; line-height:1.4;
+}
+.sr-ui .nb .nb-voyage-caption .nb-voyage-line {font-size:19px;}
+.sr-ui .nb .nb-voyage-caption .nb-voyage-reach {font-size:16px;letter-spacing:.25em;}
+.sr-ui .nb .nb-voyage-caption [hidden] {display:none;}
+/* The voyage uses one steady column: changing speakers or a shorter reply
+   never changes its width or collapses the portrait/name slots. */
+.sr-ui .nb .nb-voyage-caption.is-final-voyage {
+  top:max(5dvh,calc(env(safe-area-inset-top) + 12px)); bottom:auto;
+  width:min(560px,calc(100vw - 32px)); max-height:36dvh; overflow:auto;
+  grid-template-rows:34px 24px minmax(54px,auto);
+}
+.sr-ui .nb .nb-voyage-caption.is-final-voyage .nb-voyage-line {align-self:center;}
+.sr-ui .nb .nb-voyage-caption.is-final-voyage .nb-voyage-speaker[hidden] {display:inline-flex;visibility:hidden;}
+.sr-ui .nb .nb-voyage-caption.is-final-voyage .nb-voyage-reach[hidden],
+.sr-ui .nb .nb-voyage-caption.is-final-voyage .nb-voyage-line[hidden] {display:block;visibility:hidden;}
+@media(max-height:500px){
+  .sr-ui .nb .nb-voyage-caption.is-final-voyage {grid-template-columns:32px minmax(0,1fr);grid-template-rows:22px auto;gap:4px 10px;padding:8px 28px;}
+  .sr-ui .nb .nb-voyage-caption.is-final-voyage .nb-voyage-speaker {grid-column:1;grid-row:1 / 3;align-self:center;}
+  .sr-ui .nb .nb-voyage-caption.is-final-voyage .nb-voyage-reach {grid-column:2;grid-row:1;font-size:13px;}
+  .sr-ui .nb .nb-voyage-caption.is-final-voyage .nb-voyage-line {grid-column:2;grid-row:2;font-size:16px;}
+}
+.sr-ui .nb-voyage-speaker {display:inline-flex;align-items:center;justify-content:center;}
+.sr-ui .nb-speaker {display:inline-flex;align-items:center;gap:7px;}
+.sr-ui .nb-speaker-face {display:inline-flex;align-items:center;flex:none;}
+.sr-ui .nb-speaker-face img {display:block;}
+/* Fixed width and gentle folding keep the evening column steady as each note arrives. */
+.sr-ui .nb-tag.is-unpack {width:min(340px,calc(100vw - 40px));max-width:none;box-sizing:border-box;}
+.sr-ui .nb-tag.is-unpack .nb-tag-paper {box-sizing:border-box;width:100%;}
+.sr-ui .nb-tag.is-unpack .nb-tag-words {min-width:0;flex:1;}
+.sr-ui .nb-tag.is-unpack .nb-tag-text,
+.sr-ui .nb-tag.is-unpack .nb-tag-supplies {display:block;max-height:140px;overflow:hidden;transition:max-height 300ms ease,opacity 250ms ease;}
+.sr-ui .nb-tag.is-unpack.is-settled .nb-tag-text,
+.sr-ui .nb-tag.is-unpack.is-settled .nb-tag-supplies {display:block;max-height:0;opacity:0;}
+.sr-ui .nb .nb-board .nb-board-token,
+.sr-ui .nb .nb-board .nb-board-token:hover {transform:translate(var(--pin-x),var(--pin-y));transition:none;}
+.sr-ui .clock-tab > .nb-daylight {width:216px;max-width:100%;height:20px;}
+.sr-ui .clock-tab > .nb-daylight svg {width:100%;height:20px;}
+@media(max-width: 760px){
+  .sr-ui .nb .nb-voyage-caption {padding:12px 30px;}
+  .sr-ui .nb .nb-voyage-caption .nb-voyage-line {font-size:17px;}
+}
+
+@media(max-width: 760px),(max-height:500px){.sr-ui .clock-tab > .nb-daylight{width:190px;}}
+
+/* One face and one account per evening slip: no competing badges or nested cards. */
+.sr-ui .nb-tag.is-unpack .nb-tag-paper {padding:10px 14px;background:rgba(241,235,218,.94);border:0;border-radius:2px 6px 3px 5px;box-shadow:0 2px 8px #24362e0b;}
+.sr-ui .nb-tag.is-unpack .nb-tag-row {align-items:center;gap:11px;}
+.sr-ui .nb-tag.is-unpack .nb-tag-title {font-size:18px;font-weight:500;display:flex;align-items:center;gap:8px;}
+.sr-ui .nb-tag.is-unpack .nb-tag-who .nb-caps {font-size:11px;letter-spacing:.12em;color:var(--green-ink-soft);}
+.sr-ui .nb-tag.is-unpack .nb-tag-text {font-size:15px;line-height:1.3;}
+.sr-ui .nb-tag.is-unpack .nb-tag-swash {display:none;}
+.sr-ui .nb-tag.is-unpack.is-settled .nb-tag-paper {padding:10px 14px;}
+.sr-ui .nb-tag.is-unpack.is-story .nb-tag-paper {padding-bottom:10px;}
+.sr-ui .nb-tag.is-unpack.is-settled .nb-tag-title {font-size:18px;}
+.sr-ui .nb-tag-find-mark {display:inline-flex;flex:none;margin-left:auto;}
+.sr-ui .nb-tag.is-unpack.is-settled .nb-tag-find-mark {visibility:hidden;}
+
+.sr-ui .nb .nb-board .nb-board-token[hidden] {display:none;}
+.sr-ui .nb .nb-mist .is-journey-gate {transform:none;}
+
+/* A name is written once down the fireside column; the next bundle from the same hands keeps only the face. */
+.sr-ui .nb-tag.is-unpack.is-same-hands .nb-tag-who {visibility:hidden;}
+
+/* One reachable sailing action survives destination inspection. */
+.sr-ui .nb-departure-slot {flex:none;margin:0 28px;}
+.sr-ui .nb-departure-slot:empty {display:none;}
+.sr-ui .nb-departure-slot .nb-voyage {margin:4px 0;padding:10px 12px;}
+.sr-ui .nb-departure-slot .nb-voyage-row {gap:6px;flex-wrap:wrap;}
+.sr-ui .nb-departure-slot .nb-voyage-line {font-size:15px;margin:4px 0;}
+.sr-ui .nb-departure-slot .nb-voyage-go .nb-stamp {min-height:42px;padding:6px 16px;}
+@media(max-width: 760px){.sr-ui .nb-departure-slot .nb-voyage-row {justify-content:space-around;margin:6px 0 8px;}.sr-ui .nb-departure-slot .nb-voyage-go .nb-stamp {flex:1;}}
+.sr-ui .nb-ready-plans {border-top:1px solid var(--nb-edge);margin-top:16px;padding-top:12px;display:flex;flex-wrap:wrap;gap:6px 16px;}
+.sr-ui .nb-ready-plans > .nb-caps {flex-basis:100%;}
+.sr-ui .nb-ready-plans .nb-quiet {display:inline-flex;align-items:center;gap:6px;}
+.sr-ui .nb-construction-next {margin:0 0 12px;}
+.sr-ui .nb .nb-make :is(.nb-make-why,.nb-make-cost).is-short {color:#9b4436;opacity:1;}
+.sr-ui .nb .nb-board .nb-board-token {width:32px;height:32px;}
+.sr-ui .nb .nb-board-wrap .nb-board {bottom:32px;}
+.sr-ui .nb .nb-board-wrap .nb-stepper {top:auto;bottom:0;left:8px;right:auto;padding:0;gap:12px;background:none;border:0;box-shadow:none;backdrop-filter:none;max-width:calc(100% - 88px);overflow-x:auto;white-space:nowrap;}
+.sr-ui .nb .nb-board-wrap .nb-stepper .nb-step {font-size:14px;padding:4px 0;min-height:30px;}
+.sr-ui .nb .nb-map-zoom {position:absolute;bottom:0;right:6px;z-index:4;display:flex;gap:2px;}
+.sr-ui .nb .nb-map-zoom-button {width:34px;height:32px;min-width:0;padding:0;background:none;color:var(--green-ink);font-size:22px;line-height:1;}
+.sr-ui .nb .nb-map-zoom-button:disabled {opacity:.3;cursor:default;}
+.sr-ui .nb .is-atlas {position:relative;}
+.sr-ui .nb .is-atlas > .nb-map-zoom {bottom:36px;right:18px;background:var(--nb-paper);border-radius:5px;}
+.sr-ui .nb .nb-knowledge {pointer-events:none;}
+@media(max-width: 760px){.sr-ui .nb-departure-slot {margin:0 12px;}.sr-ui .nb-departure-slot .nb-voyage-row .nb-voyager .nb-token {width:24px;height:24px;}.sr-ui .nb-departure-slot .nb-voyage-row {gap:2px;}.sr-ui .nb-departure-slot .nb-voyager {font-size:13px;min-height:30px;}.sr-ui .nb-departure-slot .nb-voyage header p {display:none;}}
+
+.sr-ui .nb .nb-book[data-page='today'] .nb-map-legend {bottom:34px;right:8px;margin:2px 0;padding:2px 5px;background:var(--nb-paper);font-size:12px;}
+
+/* Phone: the tabs run across the top, so the collection's count is a small corner figure. */
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-book-tab:has(.nb-book-tab-count) { position: relative; }
+  .sr-ui .nb-book-tab-count { position: absolute; top: -9px; right: 2px; margin: 0; writing-mode: horizontal-tb; font-size: 10.5px; padding: 0 4px; border-radius: 6px; background: var(--ivory, #f6f0e2); box-shadow: 0 1px 2px rgba(40, 34, 20, .15); }
+}
+
+/* Evening on a phone: each companion's words kept short, the whole of them a tap away. */
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-eve-traveller { cursor: pointer; }
+  .sr-ui .nb .nb-eve-traveller:not(.is-open) .nb-eve-person-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+  .sr-ui .nb .nb-eve-traveller:not(.is-open) .nb-eve-find-line { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+}
+
+/* ---- Today on a phone, tightened (20 Nov) ----
+   The tabs clear the season bar; the companions take two short lines each; the
+   minimap gets the room they gave back; the foot keeps its controls but less air. */
+@media (max-width: 760px) {
+  .sr-ui .nb-tabs { top: -36px; }
+  .sr-ui .nb .nb-book-tab { min-height: 40px; }
+  .sr-ui .nb-book-tab-count { top: 2px; right: 3px; padding: 0 3px; box-shadow: none; background: none; font-size: 10px; }
+
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp-row { margin-top: 2px; gap: 2px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper { padding-top: 2px; gap: 1px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper .nb-token { --size: 34px !important; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper-name { font-size: 14.5px; line-height: 1.15; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper-status { font-size: 13px; line-height: 1.15; min-height: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper-where { font-size: 12.5px; line-height: 1.15; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper-where-label { display: none; }
+
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-left > .nb-board-wrap { min-height: 150px; }
+
+  .sr-ui .nb .nb-book[data-page='today'] .nb-morning-foot { padding-top: 0; padding-bottom: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-foot { padding-top: 0; padding-bottom: 6px; min-height: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-foot .nb-stamp { min-height: 44px; }
+}
+
+/* Morning bar on a phone: the companions' row is away until the day begins, so the
+   supplies it made room for come back, instead of leaving an empty bar. */
+@media (max-width: 760px) {
+  .sr-ui .nb.is-morning .nb-bar:has(.nb-group-person + .nb-group-person + .nb-group-person + .nb-group-person) .nb-bar-supplies,
+  .sr-ui .nb.is-morning .nb-bar .nb-bar-supplies { display: flex; margin-right: auto; padding-left: 10px; }
+}
+
+/* Phone: the forecast takes the minimap's place while it is open, rather than squeezing in above it. */
+@media (max-width: 760px) {
+  .sr-ui .nb-book[data-page='today']:has(.nb-today-right.is-open) .nb-today-left > .nb-board-wrap { display: none; }
+  .sr-ui .nb-book[data-page='today'] .nb-today-right.is-open > .nb-leaf-top { max-height: none; overflow-y: auto; padding-bottom: 8px; }
+}
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-book[data-page='today']:has(.nb-today-right.is-open):not(:has(.nb-today-right.has-decision)) { grid-template-rows: auto auto minmax(0, 1.3fr) auto 0 minmax(0, 1fr) auto auto; }
+}
+
+/* ---- Notebook pass (21 Nov): scroll cues, map footer, tap targets ---- */
+
+/* "More below": a small italic word and arrow resting on the faded foot of a scrolling part of a page. */
+.sr-ui .nb .nb-evening-scroll + .nb-eve-go { position: relative; }
+.sr-ui .nb .nb-evening-scroll.has-more + .nb-eve-go::before,
+.sr-ui .nb .nb-plan-detail:is(.has-more, :has(.nb-slip-body.has-more)) .nb-slip-go::before {
+  content: 'more below ↓';
+  position: absolute; left: 50%; top: -30px; transform: translateX(-50%);
+  padding: 1px 10px; border-radius: 10px;
+  font-style: italic; font-size: 13px; letter-spacing: .02em; white-space: nowrap;
+  color: var(--green-ink-soft); background: var(--nb-paper-deep, #ece5d2);
+  pointer-events: none; animation: nb-more-cue 2.4s var(--ease, ease) 1;
+}
+@keyframes nb-more-cue { 0%, 100% { translate: 0 0; } 30% { translate: 0 3px; } 60% { translate: 0 0; } }
+.sr-ui.is-reduced .nb .nb-evening-scroll.has-more + .nb-eve-go::before,
+.sr-ui.is-reduced .nb .nb-plan-detail .nb-slip-go::before { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .sr-ui .nb .nb-evening-scroll.has-more + .nb-eve-go::before,
+  .sr-ui .nb .nb-plan-detail .nb-slip-go::before { animation: none; }
+}
+
+/* The journal's recent finds read as one line each: the find, then who sketched it and when. */
+.sr-ui .nb .nb-lately li { display: block; }
+.sr-ui .nb .nb-lately-credit { font-size: 14px; font-style: italic; color: var(--green-ink-soft); }
+
+/* The place slip: a fading foot only while more of it is hidden; the "more below" cue rests on Send's row. */
+.sr-ui .nb .nb-slip-body.has-more { mask-image: linear-gradient(#000 calc(100% - 40px), transparent); -webkit-mask-image: linear-gradient(#000 calc(100% - 40px), transparent); }
+.sr-ui .nb .nb-plan-detail .nb-slip-go { position: relative; }
+/* In the slip the cue sits in Send's own row, on its empty left, rather than over the words. */
+.sr-ui .nb .nb-plan-detail:is(.has-more, :has(.nb-slip-body.has-more)) .nb-slip-go::before { left: 0; top: 50%; transform: translateY(-50%); padding: 1px 0; background: none; }
+.sr-ui .nb .nb-plan-detail:is(.has-more, :has(.nb-slip-body.has-more)) .nb-slip-go:has(.nb-overnight-option, .nb-quiet)::before { display: none; }
+@media (max-width: 760px) {
+  /* A phone's slip scrolls as one page (its name, today's note, the choices), Send held at its foot:
+     the head no longer eats the little room a short body had, so no row is cut through the middle. */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail { overflow-y: auto; overscroll-behavior: contain; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail > .nb-slip { height: auto; min-height: 100%; overflow: visible; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail .nb-slip-body { flex: 1 0 auto; overflow: visible; mask-image: none; -webkit-mask-image: none; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail .nb-slip-go { position: sticky; bottom: 0; z-index: 1; background: var(--ivory); }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-plan-detail.has-more .nb-slip-go { box-shadow: 0 -22px 18px -6px var(--ivory); }
+}
+
+/* Today's map keeps its controls in a footer strip under the drawing (walking scale or the reaches on the
+   left, the key, the zoom on the right), so none of them sits over a place's name. */
+.sr-ui .nb .nb-board-wrap { --map-foot: 34px; }
+.sr-ui .nb .nb-board-wrap .nb-board { bottom: var(--map-foot); }
+.sr-ui .nb .nb-board-wrap.has-card .nb-board { bottom: var(--map-foot); }
+.sr-ui .nb .nb-map-foot {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; height: var(--map-foot);
+  display: flex; align-items: center; gap: 12px; padding: 0 4px 0 10px; box-sizing: border-box;
+  border-top: 1px solid var(--rule-soft, rgba(36, 54, 46, .14)); background: var(--ivory);
+}
+.sr-ui .nb .nb-board-wrap .nb-map-foot > * { position: static; inset: auto; margin: 0; transform: none; }
+.sr-ui .nb .nb-board-wrap .nb-map-foot > .nb-map-scale { flex: none; height: 16px; line-height: 14px; background: none; }
+.sr-ui .nb .nb-board-wrap .nb-map-foot > .nb-stepper { flex: 0 1 auto; min-width: 0; max-width: none; display: flex; gap: 12px; padding: 0; overflow-x: auto; white-space: nowrap; background: none; border: 0; box-shadow: none; }
+.sr-ui .nb .nb-board-wrap .nb-map-foot > .nb-stepper:not(.has-regions) { display: none; }
+.sr-ui .nb .nb-board-wrap .nb-map-foot > .nb-map-legend { flex: 0 1 auto; min-width: 0; padding: 0; background: none; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--green-ink-soft); }
+.sr-ui .nb .nb-board-wrap .nb-map-foot > .nb-map-legend[hidden] { display: none; }
+.sr-ui .nb .nb-board-wrap .nb-map-foot > .nb-map-zoom { margin-left: auto; display: flex; gap: 0; background: none; }
+.sr-ui .nb .nb-board-wrap .nb-map-foot .nb-map-zoom-button { width: 36px; height: 30px; }
+@media (max-width: 760px) {
+  /* A phone shows the reaches or the key, not both: the reaches win, and each mark's slip says "Not yet visited" anyway. */
+  .sr-ui .nb .nb-board-wrap .nb-map-foot:has(.nb-stepper.has-regions) > .nb-map-legend { display: none; }
+}
+@media (pointer: coarse) {
+  .sr-ui .nb .nb-board-wrap { --map-foot: 44px; }
+  .sr-ui .nb .nb-board-wrap .nb-map-foot .nb-map-zoom-button { width: 44px; height: 44px; }
+  .sr-ui .nb .nb-board-wrap .nb-map-foot .nb-step { min-height: 44px; }
+}
+/* A map drawn smaller than its page (a wide, short board framing a whole reach) sits in the middle of it. */
+.sr-ui .nb .nb-board-inner { margin: 0 auto; }
+
+/* Fingertip targets on touch screens: the book's tabs, the map's portraits and zoom, the bar's faces. */
+@media (max-width: 760px) {
+  .sr-ui .nb-tabs { top: -40px; }
+  .sr-ui .nb .nb-book-tab { min-height: 44px; }
+}
+@media (pointer: coarse) {
+  .sr-ui .nb .nb-map-zoom-button { min-width: 44px; min-height: 44px; }
+  .sr-ui .nb .nb-group-person { min-width: 44px; min-height: 44px; }
+  .sr-ui .nb .nb-board .nb-board-token::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; }
+}
+/* With a mouse the small controls keep their size, but their hit areas reach a little past their ink. */
+.sr-ui .nb :is(.nb-slip-choice, .nb-plan-undo, .nb-map-zoom-button, .nb-step, .nb-slip-with) { position: relative; }
+.sr-ui .nb :is(.nb-slip-choice, .nb-plan-undo, .nb-map-zoom-button, .nb-step, .nb-slip-with)::after { content: ''; position: absolute; inset: -8px -4px; }
+.sr-ui .nb :is(.nb-book-close, .nb-slip-close)::after { content: ''; position: absolute; inset: -7px; }
+
+/* On a phone the morning's "Plan today" line waits just above the bar, clear of the valley's names
+   (the season tab and the places round home are at the top of the view). */
+@media (max-width: 760px) {
+  .sr-ui .nb-morning-notice { top: auto; bottom: calc(max(8px, env(safe-area-inset-bottom)) + 62px); border-radius: 9px 9px 3px 3px; }
+}
+@media (pointer: coarse) {
+  .sr-ui .nb .nb-morning-action { min-height: 44px; }
+}
+
+/* Placing a work: under the line, a few quiet words on where it can go. */
+.sr-ui .nb .nb-placing-where { display: block; margin-top: 2px; font-size: 14px; font-style: italic; color: var(--green-ink-soft); }
+
+/* Collections: what is still to find reads clearly (firmer dotted ink, a legible caption), not as a smudge. */
+.sr-ui .nb .nb-specimen.is-unfound .nb-sketch,
+.sr-ui .nb .nb-set-row .sketch.is-unfound { color: var(--green-ink-soft); opacity: 1; }
+.sr-ui .nb .nb-specimen.is-unfound .nb-specimen-name { font-size: 14px; line-height: 1.25; color: var(--green-ink-soft); }
+.sr-ui .nb .nb-specimen-name.is-repeat { opacity: .8; }
+
+/* A place only heard of: faint italics on a dotted rule, rather than a question mark that reads like a slip of the pen. */
+.sr-ui .nb .nb-place.is-rumoured .nb-place-name { font-style: italic; opacity: .78; }
+.sr-ui .nb .nb-place.is-rumoured .nb-map-name-line { text-decoration: underline dotted rgba(36, 54, 46, .45); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.sr-ui .nb :is(.nb-suggestion-link, .nb-slip-name).is-rumoured { font-style: italic; text-decoration-style: dotted; }
+
+/* The bar keeps the group's faces in the morning too (a tap opens that friend's plan), in Journey and Wander alike. */
+.sr-ui .nb.is-morning .nb-group-row { display: flex; }
+
+/* Tonight's page on a phone gives its paper margins to the travellers' rows. */
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-page-body.is-evening-journal { padding-top: 12px; padding-bottom: 14px; gap: 10px; }
+  .sr-ui .nb .nb-tonight-go.nb-eve-go { padding-top: 10px; }
+}
+.sr-ui .nb :is(.nb-sets, .nb-plate-grid) .sketch.is-unfound { color: var(--green-ink-soft); }
+.sr-ui .nb :is(.nb-sets, .nb-plate-grid, .nb-entry) .sketch.is-unfound g { opacity: .95; stroke-width: 1.9px; }
+
+/* Phone space goes to the plans and the map, rather than repeated chrome. */
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper { min-height: 44px; width: auto; min-width: 54px; padding: 2px 3px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper .nb-token { --size: 28px !important; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp-row { margin: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-morning-foot { padding: 0 12px; gap: 6px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-supplies-mark { min-height: 24px; margin: 0; gap: 4px; font-size: 15px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-morning-foot .nb-word { position: relative; min-height: 36px; font-size: 14px; padding-block: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-morning-foot .nb-word::after { content: ''; position: absolute; inset: -4px 0; }
+  /* Keep the original map row; only the portrait and footer rows get shorter. */
+  .sr-ui .nb .nb-group-row { flex: 0 1 auto; justify-content: flex-start; margin-right: auto; }
+  .sr-ui .nb .nb-group-person { flex: 0 0 30px; min-width: 30px; min-height: 44px; margin-left: -8px; position: relative; }
+  .sr-ui .nb .nb-group-person:first-child { margin-left: 0; }
+  .sr-ui .nb .nb-group-person:is(:focus-visible, :active) { z-index: 1; }
+  .sr-ui .nb .nb-group-details { min-width: 36px; min-height: 44px; }
+  /* Fold only the daylight line while reading; the season and year remain. */
+  .sr-ui .nb .clock-tab { transition: padding 240ms ease, gap 240ms ease; }
+  .sr-ui .nb .clock-tab > .nb-daylight { max-height: 20px; opacity: 1; overflow: hidden; transition: max-height 240ms ease, opacity 180ms ease, margin 240ms ease; }
+  .sr-ui .nb.has-book .clock-tab { padding-top: calc(env(safe-area-inset-top) + 4px); padding-bottom: 4px; gap: 2px; }
+  .sr-ui .nb.has-book .clock-tab > .nb-daylight { max-height: 0; opacity: 0; margin-block: 0; }
+}
+.sr-ui.is-reduced .nb .clock-tab,
+.sr-ui.is-reduced .nb .clock-tab > .nb-daylight { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .sr-ui .nb .clock-tab, .sr-ui .nb .clock-tab > .nb-daylight { transition: none; }
+}
+
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-spread-frame { padding-top: calc(max(6px, env(safe-area-inset-top)) + 100px); transition: padding-top 240ms ease; }
+  .sr-ui .nb.has-book .nb-spread-frame { padding-top: calc(max(6px, env(safe-area-inset-top)) + 84px); }
+}
+.sr-ui.is-reduced .nb .nb-spread-frame { transition: none; }
+@media (prefers-reduced-motion: reduce) { .sr-ui .nb .nb-spread-frame { transition: none; } }
+
+/* ---- Today on a phone: room for the suggestions (22 Nov) ----
+   The weather joins the header row, the companions sit a little tighter, and the
+   stores drop below Begin as a slim line, so "Worth a look" gets the space back.
+   The map keeps its height; Undo and Redo never wrap (curls alone on narrow phones). */
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-book[data-page='today'] {
+    grid-template-rows: auto minmax(0, auto) auto minmax(150px, .9fr) minmax(0, 1.1fr) auto auto;
+    grid-template-areas: 'people' 'forecast' 'departure' 'map' 'decision' 'begin' 'resources';
+  }
+  .sr-ui .nb .nb-book[data-page='today']:has(.nb-today-right.has-decision),
+  .sr-ui .nb .nb-book[data-page='today']:has(.nb-today-right.is-making) {
+    grid-template-rows: auto minmax(0, auto) auto minmax(150px, .53fr) minmax(0, 1.47fr) auto auto;
+  }
+  /* The forecast still takes the map's place while open. */
+  .sr-ui .nb .nb-book[data-page='today']:has(.nb-today-right.is-open):not(:has(.nb-today-right.has-decision)) {
+    grid-template-rows: auto minmax(0, 1.3fr) auto 0 minmax(0, 1fr) auto auto;
+  }
+
+  /* Header row: where home is on the left, today's weather (the forecast toggle) on the right.
+     "Today's plans" repeats the tab's own name, so it gives way when there is a home to show. */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-shelf:has(.nb-camp-home) .nb-camp-head { display: none; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp-home { grid-column: 1 / -1; min-height: 30px; line-height: 30px; text-align: left; padding-right: 64%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp-head { min-height: 30px; display: flex; align-items: center; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-news-toggle {
+    grid-area: people; align-self: start; justify-self: end; z-index: 1;
+    width: auto; max-width: 62%; justify-content: flex-end;
+    min-height: 30px; margin: 7px 10px 0 0; padding: 0 2px; border: 0; background: none; gap: 6px;
+  }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-news-line { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; font-size: 15px; white-space: nowrap; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-news-more { font-size: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-news-more::after { content: '▾'; font-size: 13px; color: var(--green-ink-soft); }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-news-toggle[aria-expanded='true'] .nb-news-more::after { content: '▴'; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-right > .nb-leaf-top { border-top: 1px solid var(--nb-edge); }
+
+  /* Companions: smaller portraits, no rule under the name, status on one line (two at most). */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camp-row { margin-top: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper { min-height: 0; padding: 0 4px 4px; gap: 1px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper .nb-token { --size: 30px !important; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper.is-waiting .nb-camper-name::after { display: none; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-camper-status { min-height: 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-left > .nb-shelf { padding-bottom: 2px; border-bottom: 1px solid var(--nb-edge); }
+
+  /* Worth a look: a touch larger, now that it has the room. */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-suggestion-link { font-size: 20px; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-suggested-places li { padding: 2px 0 8px; }
+
+  /* The foot: status and Undo/Redo on one unbroken line beside Begin. */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-foot { padding-top: 4px; padding-bottom: 0; border-top: 1px solid var(--nb-edge); }
+  .sr-ui .nb .nb-begin-heading { display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; white-space: nowrap; min-width: 0; }
+  .sr-ui .nb .nb-day-not-started { flex: none; }
+  /* Once a plan is made, who stays home is already shown under each portrait. */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-today-foot .nb-begin-note.is-ready { display: none; }
+
+  /* The stores and Build & equipment: one slim line at the very bottom. */
+  .sr-ui .nb .nb-book[data-page='today'] .nb-morning-foot { grid-area: resources; padding: 0 12px 4px; border-top: 0; min-height: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-supplies-mark { font-size: 15px; min-height: 0; }
+  .sr-ui .nb .nb-book[data-page='today'] .nb-morning-foot .nb-word { min-height: 40px; font-size: 14px; }
+}
+/* Narrow phones (an iPhone SE): Undo and Redo show their curls alone. */
+@media (max-width: 400px) {
+  .sr-ui .nb .nb-plan-undo .nb-undo-word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .sr-ui .nb .nb-plan-undo svg { width: 22px; height: 22px; }
+  .sr-ui .nb .nb-plan-undo { min-width: 40px; justify-content: center; }
+}
+
+/* ---- The bar's faces on a phone (22 Nov): never more than its own room ----
+   Three overlapping portraits, then "+N" for the rest (it opens the full list, like the caret).
+   The stores stay in view beside them, however many are in the group. */
+.sr-ui .nb .nb-group-more { display: none; }
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-group-row { flex: 0 0 auto; max-width: 140px; }
+  .sr-ui .nb .nb-group-person:nth-child(n+4) { display: none; }
+  .sr-ui .nb .nb-group-more {
+    display: grid; place-items: center; flex: none; position: relative; z-index: 1;
+    min-width: 30px; height: 30px; margin: 0 0 0 -8px; padding: 0 5px; align-self: center;
+    border: 1px solid var(--rule-strong); border-radius: 15px; background: var(--ivory);
+    font: 600 13px/1 var(--serif); color: var(--green-ink); cursor: pointer;
+  }
+  .sr-ui .nb .nb-group-more::after { content: ''; position: absolute; inset: -7px -4px; }
+}
+/* By day the bar also carries pause and speed: on a narrow phone the stores step out of it (they are in the notebook),
+   so nothing is squeezed or pushed past the edge. In the morning, with no time controls, they stay. */
+@media (max-width: 480px) {
+  .sr-ui .nb:not(.is-morning) .nb-bar .nb-bar-supplies { display: none; }
+}

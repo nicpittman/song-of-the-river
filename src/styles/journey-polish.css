@@ -1,0 +1,57 @@
+/* Quiet emphasis and illustrated returns; the notebook keeps its existing layout. */
+.sr-ui .nb .nb-set.is-chosen .nb-set-name { font-weight: 700; font-style: normal; color: var(--green-ink); }
+.sr-ui .nb .nb-camper.is-inspected .nb-camper-name { font-weight: 700; }
+.sr-ui .nb .nb-confirmed-plan > .nb-token { float: left; margin: 0 10px 8px 0; }
+.sr-ui .nb .nb-overnight-option { display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; }
+.sr-ui .nb .nb-overnight-option input { width: 15px; height: 15px; accent-color: #7c8862; flex: none; }
+.sr-ui .nb .nb-overnight-option small { display: block; font-size: 12px; font-style: italic; color: var(--green-ink-soft); }
+.sr-ui .nb .nb-group-row { gap: 0; padding: 0 8px; }
+.sr-ui .nb .nb-group-person { display: grid; place-items: center; background: none; border: 0; padding: 7px 0; margin-left: -3px; color: inherit; cursor: pointer; }
+.sr-ui .nb .nb-group-person:focus-visible { outline: 1px solid var(--green-ink-soft); outline-offset: 2px; border-radius: 50%; }
+.sr-ui .nb .nb-group-details { background: none; border: 0; color: var(--green-ink-soft); width: 23px; padding: 8px 0; cursor: pointer; }
+.sr-ui .nb .nb-place.is-selected[aria-pressed='true'] .nb-place-ring,
+.sr-ui .nb .nb-project-mark.is-selected { border: 1px solid rgba(145, 129, 85, .5); background: rgba(234, 218, 169, .28); box-shadow: 0 0 8px 5px rgba(226, 203, 130, .35), 0 0 18px 9px rgba(237, 222, 174, .22); }
+.sr-ui .nb-tag.is-beat .nb-tag-paper,
+.sr-ui .nb-tag.is-note .nb-tag-paper,
+.sr-ui .nb-tag.is-sighting .nb-tag-paper { padding: 6px 11px; background: rgba(243, 237, 219, .91); border-radius: 4px 9px 5px 8px; box-shadow: 0 2px 8px rgba(45, 53, 35, .08); }
+.sr-ui .nb-tag.is-beat .nb-tag-text,
+.sr-ui .nb-tag.is-note .nb-tag-text,
+.sr-ui .nb-tag.is-sighting .nb-tag-text { font-size: 15px; line-height: 1.3; }
+.sr-ui .nb .nb-map-scale { position: sticky; display: block; bottom: 8px; left: 12px; width: var(--walk-scale, 80px); margin: -23px 0 5px 12px; height: 18px; border-bottom: 1px solid rgba(65, 76, 57, .65); font-size: 11px; line-height: 15px; text-align: center; color: var(--green-ink-soft); pointer-events: none; background: rgba(244, 239, 224, .82); }
+.sr-ui .nb .nb-map-scale::before, .sr-ui .nb .nb-map-scale::after { content: ''; position: absolute; bottom: -1px; height: 5px; border-left: 1px solid currentColor; }
+.sr-ui .nb .nb-map-scale::before { left: 0; } .sr-ui .nb .nb-map-scale::after { right: 0; }
+.sr-ui .nb .nb-departure { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 12px; padding: 9px 0; border-top: 1px solid var(--nb-edge); font-size: 13px; }
+.sr-ui .nb .nb-departure > strong { width: 100%; font-weight: 500; font-style: italic; }
+.sr-ui .nb .nb-departure .is-done { color: var(--green-ink-soft); }
+.sr-ui .nb .nb-page:has(> .is-evening-journal) { display: flex; flex-direction: column; overflow: hidden; }
+/* Reports scroll independently; the only way forward remains on the paper edge. */
+.sr-ui .nb .nb-page-body.is-evening-journal { flex: 1; height: 100%; min-height: 0; box-sizing: border-box; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 14px; overflow: hidden; }
+.sr-ui .nb .nb-evening-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 8px; }
+.sr-ui .nb .nb-page-body.is-field-page { display:flex; flex-direction:column; min-height:0; height:100%; overflow:hidden; }
+.sr-ui .nb .nb-field-back { flex:none; position:relative; z-index:1; padding-bottom:12px; }
+.sr-ui .nb .is-field-page > div { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+.sr-ui .nb-tab-book { flex:0 0 22px; min-width:22px; }
+.sr-ui .nb-tab-book :is(svg, img) { display:block; flex:none; overflow:visible; }
+/* A day spent building has the same persistent controls as a day spent travelling. */
+.sr-ui .nb.is-active.is-day:not(.has-book):not(.is-voyaging) .nb-bar { visibility:visible; opacity:1; pointer-events:auto; }
+.sr-ui .nb .nb-tonight-go { margin: 0; padding-top: 10px; border-top: 1px solid var(--nb-edge); background: none; }
+.sr-ui .nb .nb-person-finds { display: flex; flex-wrap: wrap; gap: 8px 14px; list-style: none; padding: 8px 0 0; margin: 0; }
+.sr-ui .nb .nb-person-finds li { display: flex; align-items: center; gap: 7px; font-size: 15px; }
+.sr-ui .nb .nb-person-finds .nb-sketch { flex: none; }
+.sr-ui .nb .nb-opening-story { margin: 8px 0 18px; font-style: italic; line-height: 1.4; color: var(--green-ink); }
+@media (max-width: 760px) { .sr-ui .nb .nb-departure { font-size: 14px; } }
+
+
+.sr-ui .nb .nb-second-stop { display: flex; align-items: center; gap: 10px; margin: 8px 0; font-size: 15px; }
+
+.sr-ui .nb .nb-day-end-people > .is-standout { border-left: 2px solid #b79b70; padding-left: 10px; background: linear-gradient(90deg, rgba(204, 188, 135, .09), transparent); }
+.sr-ui .nb .nb-day-end-words > .nb-caps { margin-bottom: 5px; font-size: 11px; }
+.sr-ui .nb .nb-person-finds li:has(.nb-person-find-line) { flex-basis: 100%; align-items: flex-start; }
+.sr-ui .nb .nb-person-finds li > span { display: flex; flex-direction: column; gap: 2px; }
+.sr-ui .nb .nb-person-find-line { font-size: 14px; font-style: italic; line-height: 1.35; opacity: .85; }
+
+/* The moving morning: one line per friend, each with a quiet stop on the way. */
+.sr-ui .nb .nb-way-down { flex-direction: column; align-items: flex-start; gap: 8px; }
+.sr-ui .nb .nb-detour-row { display: flex; align-items: center; gap: 4px; }
+.sr-ui .nb .nb-detour-remove { min-width: 32px; min-height: 32px; justify-content: center; font-size: 18px; text-decoration: none; }
+.sr-ui .nb .nb-detour-stops li > span { display: block; }

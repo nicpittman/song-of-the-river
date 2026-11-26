@@ -1,0 +1,281 @@
+{
+  "provider": "OpenAI Images API",
+  "model": "gpt-image-2.5-flare",
+  "date": "2026-11-18",
+  "references": "Cottage style reference for scenery; original Ren idle and new villager identity for characters",
+  "quality": "high",
+  "size": "1024x1024",
+  "requests": 12,
+  "workflow": "Owner-authorised curl multipart image edits; true transparent PNG; alpha cleanup, crop, registration and WebP/atlas export. No retries.",
+  "usage_estimated_usd": 0.697766,
+  "assets": [
+    {
+      "id": "harbour-light",
+      "file": "public/art/harbour-light.avif",
+      "prompt": "The attached cottage is a STYLE AND CAMERA REFERENCE ONLY. Do not preserve its subject. Make the following new sprite in precisely its rendering, palette and viewpoint.\nUse-case: game asset, isolated sprite. Subject: one SMALL old Japanese coastal harbour light, a timber beacon built by villagers, not a grand western lighthouse. Orthographic elevated three-quarter view, camera 35 degrees above the ground, vertical walls, looking north. Squat square weathered dark timber tower on a low irregular stone foundation, open sheltered lantern room with softly warm paper lantern, simple shallow pitched cedar-shingle roof, practical wooden stair at one side, a little moss on the stones. Total height about one modest cottage, 4m, modest and welcoming. Match a refined naturalistic storybook illustration of rural medieval Japan, delicate precise painterly brushwork, fine restrained texture, muted sage, warm grey stone, dark brown cedar; no heavy outlines or cartoony shapes. Diffuse upper-left light. Single entire object only, bottom contact centred, generous clear padding on all sides. Fully transparent PNG background. No ground island, no scenery, no sky, no atmosphere, no shadow, no text, no circle, no halo, no people, no flags, no modern concrete or cylindrical European stone lighthouse. Readable silhouette at 90 pixels tall, restrained detail.\n",
+      "original_sha256": "f7bfd156888505aad4b95ce8ab3ed17e02ae288eeaa0a0967e7e7638dfc1722b",
+      "sha256": "4fe7a55ab060d10f9c7f2c714c96b0fce2577e40addc990fb18279287cc64715",
+      "usage": {
+        "input_tokens": 374,
+        "input_tokens_details": {
+          "image_tokens": 88,
+          "text_tokens": 286
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2130
+      },
+      "usage_estimated_usd": 0.054814,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "stilt-hut",
+      "file": "public/art/stilt-hut.avif",
+      "prompt": "Attached image is a STYLE AND CAMERA REFERENCE ONLY. Make a NEW subject below in the same precise painterly rendering, muted colour, and elevated camera. Do not reproduce the cottage.\nUse case: isolated production game sprite for Song of the River.\nSubject: A modest timber fishing hut on short uneven wooden piles, hand-tied reed thatch roof, weathered plank walls, open sliding door, tiny net and rope coil hanging below an eave. Warm quiet coastal Japanese village character. Compact building, not a tall tropical stilt house. A short rough ladder reaches a small front platform. Entire pile feet and roof visible.\nStyle: Orthographic elevated three-quarter view, camera 35 degrees above ground looking north, vertical walls. Refined naturalistic storybook illustration of rural medieval Japan, precise delicate painterly detail, restrained grain, muted woodland green, warm grey stone and weathered cedar. Diffuse upper-left light. Fully transparent PNG background. One whole isolated object, generous clear padding, no cast shadow, no ground island, no horizon, no text or halo. Match the game’s existing thatched cottages and watermill, never photorealistic, cartoon, outlined or low-poly.\n",
+      "original_sha256": "54bcd3670889263ac8dad0f92ff19a92f240feae36a853bb751f176e3fcb4bfd",
+      "sha256": "ce554b1e0da6ca3ff0b2f762d52451bc0e3be028f6ae0670b74f7a0c5c4734d0",
+      "usage": {
+        "input_tokens": 345,
+        "input_tokens_details": {
+          "image_tokens": 88,
+          "text_tokens": 257
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2101
+      },
+      "usage_estimated_usd": 0.054669,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "shelter",
+      "file": "public/art/shelter.avif",
+      "prompt": "Attached image is a STYLE AND CAMERA REFERENCE ONLY. Make a NEW subject below in the same precise painterly rendering, muted colour, and elevated camera. Do not reproduce the cottage.\nUse case: isolated production game sprite for Song of the River.\nSubject: A small practical overnight walkers’ hut, open front facing slightly right, low thatched sloping roof, weathered cedar posts and back wall, raised plank sleeping shelf with a neatly rolled pale straw mat. No people, no belongings floating outside. Clearly a finished welcoming shelter, not an unfinished building frame. Fits naturally beside an old rural path.\nStyle: Orthographic elevated three-quarter view, camera 35 degrees above ground looking north, vertical walls. Refined naturalistic storybook illustration of rural medieval Japan, precise delicate painterly detail, restrained grain, muted woodland green, warm grey stone and weathered cedar. Diffuse upper-left light. Fully transparent PNG background. One whole isolated object, generous clear padding, no cast shadow, no ground island, no horizon, no text or halo. Match the game’s existing thatched cottages and watermill, never photorealistic, cartoon, outlined or low-poly.\n",
+      "original_sha256": "8bee817ae3cc9009928099d5e9aab3c6e7aad59f46b37e1e0144a17511ed3d84",
+      "sha256": "6de2c19853d8f763deb50ddf192ef59f79a40e483806fecdd57b0f060922c6bd",
+      "usage": {
+        "input_tokens": 340,
+        "input_tokens_details": {
+          "image_tokens": 88,
+          "text_tokens": 252
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2096
+      },
+      "usage_estimated_usd": 0.054644,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "boat",
+      "file": "public/art/boat.avif",
+      "prompt": "Attached image is a STYLE AND CAMERA REFERENCE ONLY. Make a NEW subject below in the same precise painterly rendering, muted colour, and elevated camera. Do not reproduce the cottage.\nUse case: isolated production game sprite for Song of the River.\nSubject: One finished little Japanese river boat, hand-built weathered cedar clinker hull with pointed prow facing right, low open sides and three simple cross benches. Long gentle hull, broadside seen slightly from above. A coiled rope at bow and a short oar tucked along the gunwale. NO mast, NO sail, NO people, NO water or wake: those are animated separately in game. Whole horizontal hull occupies about 80 percent canvas width.\nStyle: Orthographic elevated three-quarter view, camera 35 degrees above ground looking north, vertical walls. Refined naturalistic storybook illustration of rural medieval Japan, precise delicate painterly detail, restrained grain, muted woodland green, warm grey stone and weathered cedar. Diffuse upper-left light. Fully transparent PNG background. One whole isolated object, generous clear padding, no cast shadow, no ground island, no horizon, no text or halo. Match the game’s existing thatched cottages and watermill, never photorealistic, cartoon, outlined or low-poly.\n",
+      "original_sha256": "baa1dff6a33d790c4e98a7c60f502af22290961aa49c9dc423cb4d705efe3f25",
+      "sha256": "a97cc570b8dafdb66264d5ee93af2e59ccbc1d31e9e528eb6c01783d62e337ef",
+      "usage": {
+        "input_tokens": 360,
+        "input_tokens_details": {
+          "image_tokens": 88,
+          "text_tokens": 272
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2116
+      },
+      "usage_estimated_usd": 0.054744,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "haru-camp",
+      "file": "public/art/haru-camp.avif",
+      "prompt": "Attached image is a STYLE AND CAMERA REFERENCE ONLY. Make a NEW subject below in the same precise painterly rendering, muted colour, and elevated camera. Do not reproduce the cottage.\nUse case: isolated production game sprite for Song of the River.\nSubject: One tiny traveller’s woodland lean-to, a low roof of cedar bark over a frame of three rough branches, a bed of dry reeds below, a small tied canvas pack and bow case resting beneath it. Haru’s modest temporary camp under the coastal pines. No actual trees, no people, no fire, no ground island. No modern camping equipment. Natural green-brown silhouette, readable at small size.\nStyle: Orthographic elevated three-quarter view, camera 35 degrees above ground looking north, vertical walls. Refined naturalistic storybook illustration of rural medieval Japan, precise delicate painterly detail, restrained grain, muted woodland green, warm grey stone and weathered cedar. Diffuse upper-left light. Fully transparent PNG background. One whole isolated object, generous clear padding, no cast shadow, no ground island, no horizon, no text or halo. Match the game’s existing thatched cottages and watermill, never photorealistic, cartoon, outlined or low-poly.\n",
+      "original_sha256": "bf7e9fb1846a0a0c3da1cf09c28517cac6ada893a4d78688d29118193eddca94",
+      "sha256": "a2158c69b4f10feafd99bd464cbae793bfca2d5c0210c1cb3823e6b4eae4dcba",
+      "usage": {
+        "input_tokens": 354,
+        "input_tokens_details": {
+          "image_tokens": 88,
+          "text_tokens": 266
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2110
+      },
+      "usage_estimated_usd": 0.054714,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "dune-grass",
+      "file": "public/art/dune-grass.avif",
+      "prompt": "Attached image is a STYLE AND CAMERA REFERENCE ONLY. Make a NEW subject below in the same precise painterly rendering, muted colour, and elevated camera. Do not reproduce the cottage.\nUse case: isolated production game sprite for Song of the River.\nSubject: A single natural small tuft of Japanese coastal dune grass, short arching olive-green blades with just two restrained pale seed heads. Thin individually painted leaves, uneven open silhouette, fresh muted green and straw. A small wispy plant, not a large symmetrical fountain, no dark ground patch, no shadow, no flowers, no moss mound, transparent between every leaf.\nStyle: Orthographic elevated three-quarter view, camera 35 degrees above ground looking north, vertical walls. Refined naturalistic storybook illustration of rural medieval Japan, precise delicate painterly detail, restrained grain, muted woodland green, warm grey stone and weathered cedar. Diffuse upper-left light. Fully transparent PNG background. One whole isolated object, generous clear padding, no cast shadow, no ground island, no horizon, no text or halo. Match the game’s existing thatched cottages and watermill, never photorealistic, cartoon, outlined or low-poly.\n",
+      "original_sha256": "8678d2c420f8602b4ee86c04a65f30cbecb96819a43cc40acf029664f0d87cea",
+      "sha256": "2a9579627d4509373606df19eb62baa7eff073ba1c50b5ca21c116e2e7e5cab8",
+      "usage": {
+        "input_tokens": 343,
+        "input_tokens_details": {
+          "image_tokens": 88,
+          "text_tokens": 255
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2099
+      },
+      "usage_estimated_usd": 0.054659,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "villager-idle-0",
+      "file": "public/art/people-villager.avif",
+      "prompt": "Use case: isolated production game sprite for Song of the River.\nSubject: One ordinary adult Japanese valley villager, muted faded indigo loose coat tied at waist, light tan trousers, simple shin wraps, straw sandals, short dark hair, no hat or props. Full body side-on facing right. Natural small head and modest figure, relaxed arms at sides, grounded feet. Illustrated at the same proportions as Sora and Ren. Single isolated full-length character only, no ground or shadow.\nStyle: Orthographic elevated three-quarter view, camera 35 degrees above ground looking north, vertical walls. Refined naturalistic storybook illustration of rural medieval Japan, precise delicate painterly detail, restrained grain, muted woodland green, warm grey stone and weathered cedar. Diffuse upper-left light. Fully transparent PNG background. One whole isolated object, generous clear padding, no cast shadow, no ground island, no horizon, no text or halo. Match the game’s existing thatched cottages and watermill, never photorealistic, cartoon, outlined or low-poly.\n",
+      "original_sha256": "61687a664153da587e8f0c0107d12dba5f2e9a46b31a3d10867970a80e762dd3",
+      "sha256": "25362d974e7947db7ce7c2c445bd7b48ba71edf8099d562df1703abd76d5305c",
+      "usage": {
+        "input_tokens": 1253,
+        "input_tokens_details": {
+          "image_tokens": 1024,
+          "text_tokens": 229
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 3009
+      },
+      "usage_estimated_usd": 0.062017,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "villager-turn-0",
+      "file": "public/art/people-villager.avif",
+      "prompt": "Use case: isolated production animation frame. Edit the attached character into a new pose, preserving exactly the same villager identity, head/body proportions, faded indigo coat, tan trousers, shin wraps and sandals. Standing facing the viewer, shoulders and face front, both feet grounded; a transitional turn pose. Same elevated three-quarter game camera and delicate painterly rendering. Entire body in frame with generous padding; feet at same baseline and character same height as reference. No hat, props, ground, shadow, text, glow or halo. True transparent background.",
+      "original_sha256": "340bcdbb1b1eaa376d918f6932df852d2b3f4dda94934cb7e09d7a4580c9956a",
+      "sha256": "25362d974e7947db7ce7c2c445bd7b48ba71edf8099d562df1703abd76d5305c",
+      "usage": {
+        "input_tokens": 1151,
+        "input_tokens_details": {
+          "image_tokens": 1024,
+          "text_tokens": 127
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2907
+      },
+      "usage_estimated_usd": 0.061507,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "villager-walk-0",
+      "file": "public/art/people-villager.avif",
+      "prompt": "Use case: isolated production animation frame. Edit the attached character into a new pose, preserving exactly the same villager identity, head/body proportions, faded indigo coat, tan trousers, shin wraps and sandals. Walking RIGHT, left foot forward contacting ground, right foot behind, arms gently opposite legs. Same elevated three-quarter game camera and delicate painterly rendering. Entire body in frame with generous padding; feet at same baseline and character same height as reference. No hat, props, ground, shadow, text, glow or halo. True transparent background.",
+      "original_sha256": "2801014c9aa62a2e9f7b6286ffae71c0a436762c8ee1398720f7cf0ca9e73c49",
+      "sha256": "25362d974e7947db7ce7c2c445bd7b48ba71edf8099d562df1703abd76d5305c",
+      "usage": {
+        "input_tokens": 1150,
+        "input_tokens_details": {
+          "image_tokens": 1024,
+          "text_tokens": 126
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2906
+      },
+      "usage_estimated_usd": 0.061502,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "villager-walk-1",
+      "file": "public/art/people-villager.avif",
+      "prompt": "Use case: isolated production animation frame. Edit the attached character into a new pose, preserving exactly the same villager identity, head/body proportions, faded indigo coat, tan trousers, shin wraps and sandals. Walking RIGHT, weight over left planted foot, right foot passing underneath, arms relaxed. Same elevated three-quarter game camera and delicate painterly rendering. Entire body in frame with generous padding; feet at same baseline and character same height as reference. No hat, props, ground, shadow, text, glow or halo. True transparent background.",
+      "original_sha256": "0121b4efeb4c7908f9c69a04c230c5d379f08659e7fd4cda85f3e9444456f446",
+      "sha256": "25362d974e7947db7ce7c2c445bd7b48ba71edf8099d562df1703abd76d5305c",
+      "usage": {
+        "input_tokens": 1149,
+        "input_tokens_details": {
+          "image_tokens": 1024,
+          "text_tokens": 125
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2905
+      },
+      "usage_estimated_usd": 0.061497,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "villager-walk-2",
+      "file": "public/art/people-villager.avif",
+      "prompt": "Use case: isolated production animation frame. Edit the attached character into a new pose, preserving exactly the same villager identity, head/body proportions, faded indigo coat, tan trousers, shin wraps and sandals. Walking RIGHT, right foot forward contacting ground, left foot behind, arms gently opposite legs. Same elevated three-quarter game camera and delicate painterly rendering. Entire body in frame with generous padding; feet at same baseline and character same height as reference. No hat, props, ground, shadow, text, glow or halo. True transparent background.",
+      "original_sha256": "5dd6dfe54a01678338d231724c37eaf99298ce55aa2a17ef4beb6c73ae60d52e",
+      "sha256": "25362d974e7947db7ce7c2c445bd7b48ba71edf8099d562df1703abd76d5305c",
+      "usage": {
+        "input_tokens": 1150,
+        "input_tokens_details": {
+          "image_tokens": 1024,
+          "text_tokens": 126
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2906
+      },
+      "usage_estimated_usd": 0.061502,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    },
+    {
+      "id": "villager-walk-3",
+      "file": "public/art/people-villager.avif",
+      "prompt": "Use case: isolated production animation frame. Edit the attached character into a new pose, preserving exactly the same villager identity, head/body proportions, faded indigo coat, tan trousers, shin wraps and sandals. Walking RIGHT, weight over right planted foot, left foot passing underneath, arms relaxed. Same elevated three-quarter game camera and delicate painterly rendering. Entire body in frame with generous padding; feet at same baseline and character same height as reference. No hat, props, ground, shadow, text, glow or halo. True transparent background.",
+      "original_sha256": "5698669cbe9b2e485b682a4fc1791508c4ed3c8b01317f6fc56a58cd565f9234",
+      "sha256": "25362d974e7947db7ce7c2c445bd7b48ba71edf8099d562df1703abd76d5305c",
+      "usage": {
+        "input_tokens": 1149,
+        "input_tokens_details": {
+          "image_tokens": 1024,
+          "text_tokens": 125
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 2905
+      },
+      "usage_estimated_usd": 0.061497,
+      "processing": "Alpha noise below 8 removed; silhouette crop; scale/register only; AVIF 62 (scenery) or 66 (character atlas); ground materials WebP 72. Source and paid response metadata retained outside release."
+    }
+  ],
+  "license": "CC-BY-NC-4.0",
+  "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+  "attribution": "Nic Pittman (pCO₂) · Song of the River · ChatGPT / OpenAI illustrations",
+  "terms": "Project-created artwork is offered under CC BY-NC 4.0 to the extent of rights held by Nic Pittman. Separate from the PolyForm Noncommercial code licence. Third-party assets and music retain their own terms. See ASSET-TERMS.md. No public-domain or exclusive copyright claim is asserted for generated images."
+}

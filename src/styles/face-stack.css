@@ -1,0 +1,32 @@
+/* Several friends at one place: their faces overlap like a fanned hand, the first on top. */
+.sr-ui .nb .nb-board .nb-section .nb-board-token.is-stacked { pointer-events: none; transition: transform 160ms var(--ease-out, ease-out); }
+.sr-ui .nb .nb-board .nb-section .nb-board-token.is-stacked .nb-token { background: var(--ivory); box-shadow: 0 0 0 1.5px var(--ivory), 0 1px 2px #24362e24; }
+.sr-ui .nb .nb-board .nb-section .nb-board-token.is-tucked { visibility: hidden; }
+.sr-ui .nb .nb-board .nb-section .nb-board-token.is-fanned { pointer-events: auto; }
+
+/* The stack's own button: its hit area and "+N" chip, and once spread, a little paper under the faces. */
+.sr-ui .nb .nb-face-stack {
+  position: absolute; z-index: 10; margin: 0; padding: 0; min-width: 0; min-height: 0;
+  border: 0; border-radius: 18px; background: transparent; cursor: pointer;
+  transform: translate(var(--pin-x), var(--pin-y));
+  transition: background-color 160ms ease-out, box-shadow 160ms ease-out;
+}
+.sr-ui .nb .nb-face-stack:hover:not(.is-fanned) { background: #f6f1e466; }
+.sr-ui .nb .nb-face-stack:focus-visible { outline: 1px solid var(--green-ink-soft); outline-offset: 2px; }
+.sr-ui .nb .nb-face-stack.is-fanned { z-index: 30; border-radius: 22px; background: var(--ivory); box-shadow: 0 0 0 1px var(--nb-edge, #24362e21), 0 3px 10px #24362e1f; cursor: default; }
+.sr-ui .nb .nb-face-chip {
+  position: absolute; right: 0; bottom: 0; display: grid; place-items: center;
+  min-width: 20px; height: 17px; padding: 0 4px; box-sizing: border-box;
+  border: 1px solid #4f615780; border-radius: 9px; background: var(--ivory);
+  font: 600 12px/1 var(--serif); color: var(--green-ink); pointer-events: none;
+}
+.sr-ui .nb .nb-face-stack.is-fanned .nb-face-chip { display: none; }
+@media (pointer: coarse) { .sr-ui .nb .nb-face-stack::after { content: ''; position: absolute; inset: -6px; border-radius: 22px; } }
+@media (prefers-reduced-motion: reduce) { .sr-ui .nb .nb-board .nb-section .nb-board-token.is-stacked { transition: none; } }
+/* A lone face standing for a crowded place: the chip sits on whichever corner keeps it off every name
+   (see chipRect in mapTokens.ts, which these offsets and the chip's 24 by 17 size must match). */
+.sr-ui .nb .nb-face-stack.is-single .nb-face-chip { right: -5px; bottom: -3px; min-width: 24px; max-width: 24px; padding: 0 2px; }
+.sr-ui .nb .nb-face-stack.is-single.chip-left .nb-face-chip { right: auto; left: -5px; }
+.sr-ui .nb .nb-face-stack.is-single.chip-top .nb-face-chip { bottom: auto; top: -3px; }
+/* No corner free beside the face: tucked just inside its own corner, covering nothing else. */
+.sr-ui .nb .nb-face-stack.is-single.chip-tucked .nb-face-chip { right: 1px; bottom: 1px; }

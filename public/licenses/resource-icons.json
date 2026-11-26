@@ -1,0 +1,65 @@
+{
+  "provider": "OpenAI Images API",
+  "date": "2026-11-18",
+  "workflow": "Imagegen skill CLI validated requests, gpt-image-2 via curl; magenta background removed with bundled remove_chroma_key.py; resized to 128px PNG. True RGBA alpha, no background wash. Originals and 20/24/32px review retained locally under art/source/resource-icons-2026-11-18.",
+  "assets": [
+    {
+      "id": "resource-fish",
+      "file": "src/ui/assets/resource-fish.png",
+      "created": 1794954753,
+      "background": "opaque",
+      "output_format": "png",
+      "quality": "medium",
+      "safety_identifier": null,
+      "size": "1024x1024",
+      "usage": {
+        "input_tokens": 212,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 212
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 1968
+      },
+      "prompt": "A minimal hand-drawn notebook UI icon. One dark moss-green ink monoline (#293c32), rounded strokes, controlled slight organic irregularity, unfilled outlines. SIMPLE SVG-LIKE CLARITY, not a painting. Wide bold strokes about 46 pixels thick on the 1024 canvas, so it reads at 24 pixels. Subject centred within central 820x820 with generous even padding. Absolutely flat bright magenta (#ff00ff) background for chroma key removal, identical solid colour inside and outside all outlines. No white fill, no paper, shading, shadow, wash, grain, gradients, badge, lettering, decorative speckles, or extra objects. Exactly ONE side-profile freshwater fish facing left: one simple continuous body outline, forked tail, an eye dot, a short curved gill, one small dorsal fin, one lower fin. Few confident lines. Friendly recognisable fish silhouette. No scales, no water. Fish fills the width, roughly twice as wide as tall.",
+      "model": "gpt-image-2",
+      "transport": "Skill CLI validated payload; approved curl transport",
+      "original_sha256": "eac2c7bc4614bf4b48d7c53f8f7e47cfee2dbfb1f4293998c2166f07d8f2c2f5"
+    },
+    {
+      "id": "resource-twigs",
+      "file": "src/ui/assets/resource-twigs.png",
+      "created": 1794954809,
+      "background": "opaque",
+      "output_format": "png",
+      "quality": "medium",
+      "safety_identifier": null,
+      "size": "1024x1024",
+      "usage": {
+        "input_tokens": 219,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 219
+        },
+        "output_tokens": 1756,
+        "output_tokens_details": {
+          "image_tokens": 1756,
+          "text_tokens": 0
+        },
+        "total_tokens": 1975
+      },
+      "prompt": "A minimal hand-drawn notebook UI icon. One dark moss-green ink monoline (#293c32), rounded strokes, controlled slight organic irregularity, unfilled outlines. SIMPLE SVG-LIKE CLARITY, not a painting. Wide bold strokes about 46 pixels thick on the 1024 canvas, so it reads at 24 pixels. Subject centred within central 820x820 with generous even padding. Absolutely flat bright magenta (#ff00ff) background for chroma key removal, identical solid colour inside and outside all outlines. No white fill, no paper, shading, shadow, wash, grain, gradients, badge, lettering, decorative speckles, or extra objects. Exactly ONE small tied bundle of FOUR short leafless wood twigs, a gentle diagonal from lower left to upper right. Recognisable short forked branch ends. Held together by ONE simple loop of cord at the middle. Few confident outlines, interior gaps open to the magenta background. No leaves, no wheat, no straw, no chopped logs, no fire.",
+      "model": "gpt-image-2",
+      "transport": "Skill CLI validated payload; approved curl transport",
+      "original_sha256": "e0338a13352d773e39f7a81a25464a36f156fd32232081b69ea2f412cac8bc16"
+    }
+  ],
+  "license": "CC-BY-NC-4.0",
+  "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
+  "attribution": "Nic Pittman (pCO₂) · Song of the River · ChatGPT / OpenAI illustrations",
+  "terms": "Project-created artwork is offered under CC BY-NC 4.0 to the extent of rights held by Nic Pittman. Separate from the PolyForm Noncommercial code licence. Third-party assets and music retain their own terms. See ASSET-TERMS.md. No public-domain or exclusive copyright claim is asserted for generated images."
+}

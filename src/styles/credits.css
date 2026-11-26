@@ -1,0 +1,50 @@
+.sr-ui .credits-page { position: fixed; inset: 0; z-index: 500; display: none; place-items: center; padding: 24px; color: var(--green-ink); background: rgba(34, 48, 41, .4); pointer-events: auto; }
+.sr-ui .credits-page.is-open { display: grid; }
+.credits-paper { width: min(760px, 100%); max-height: calc(100dvh - 48px); background: #f4eede; border: 5px solid #7a806c; border-radius: 9px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 80px #18251e40; }
+.credits-head { position: relative; display: grid; justify-items: center; gap: 6px; padding: 22px 38px 16px; border-bottom: 1px solid var(--rule); text-align: center; }
+.credits-head h1 { margin: 0; font-size: 34px; font-weight: 500; font-style: italic; line-height: 1.1; }
+.credits-caps { margin: 0 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--green-ink-soft); }
+.credits-friends { display: flex; justify-content: center; gap: 12px; margin: 10px 0 4px; padding: 0; list-style: none; }
+.credits-friends li { display: grid; justify-items: center; gap: 3px; font-size: 13px; font-style: italic; color: var(--green-ink-soft); }
+.credits-friends .portrait { display: block; width: 44px; height: 44px; }
+.sr-ui .credits-close { position: absolute; top: 13px; right: 14px; font-size: 26px; width: 34px; height: 34px; text-decoration: none; }
+.sr-ui .credits-cutscene { min-height: 32px; font-size: 15px; }
+.credits-scroll { overflow-y: auto; padding: 26px 44px 40px; overscroll-behavior: contain; font-size: 18px; line-height: 1.45; text-align: center; }
+.credits-scroll p { margin: 2px 0 8px; }
+.credits-scroll section { margin: 30px 0; }
+.credits-byline h2 { margin: 0; font-size: 28px; font-weight: 500; }
+.credits-soft { color: var(--green-ink-soft); font-style: italic; font-size: 16px; }
+.credits-jam { font-style: italic; color: var(--green-ink-soft); font-size: 15px; }
+.credits-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0 36px; margin-top: 8px; }
+.credits-pair .credits-block { margin: 22px 0 0; }
+.credits-source { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.credits-terms { color: var(--green-ink-soft); font-size: 14px; }
+.credits-terms.is-licence { font-family: ui-monospace, monospace; font-size: 12px; font-variant-numeric: slashed-zero; }
+.credits-inspirations ul { list-style: none; padding: 0; margin: 6px auto 0; max-width: 560px; }
+.credits-inspirations li { margin: 7px 0; font-size: 16px; }
+.credits-inspirations li span { color: var(--green-ink-soft); font-style: italic; }
+.credits-sounds { max-width: 600px; margin-left: auto !important; margin-right: auto !important; text-align: left; }
+.credits-sounds .credits-caps, .credits-sounds > .credits-soft { text-align: center; }
+.credits-record { padding: 10px 0; border-bottom: 1px solid var(--rule-soft); }
+.credits-record summary { cursor: pointer; font-size: 17px; }
+.credits-record ul { font-size: 14px; padding-left: 20px; }
+.credits-record code { font-size: 11px; overflow-wrap: anywhere; }
+.credits-swash { width: 150px; margin: 34px auto 0; color: var(--teal); }
+.credits-swash svg { display: block; width: 100%; height: auto; }
+.credits-thanks { font-style: italic; font-size: 20px; margin-top: 14px !important; }
+.credits-rating { max-width: 390px; margin: 8px auto 0 !important; font-size: 16px; color: var(--green-ink-soft); }
+.credits-licence { text-align: left; }
+.credits-licence pre { max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.65 ui-monospace, monospace; color: var(--green-ink); user-select: text; }
+@media (max-width: 760px) {
+  .sr-ui .credits-page { padding: 10px; }
+  .credits-paper { max-height: calc(100dvh - 20px); }
+  .credits-head { padding: 16px 16px 12px; }
+  .credits-head h1 { font-size: 28px; }
+  .credits-friends { gap: 6px; }
+  .credits-friends li { font-size: 11px; }
+  .credits-friends .portrait { width: 40px; height: 40px; }
+  .credits-scroll { padding: 18px 18px 30px; }
+  .credits-pair { grid-template-columns: 1fr; }
+}
+.credits-record summary::marker { color: var(--green-ink-soft); font-size: .75em; }
+.credits-terms.is-small { font-size: 13px; margin-top: 4px; }

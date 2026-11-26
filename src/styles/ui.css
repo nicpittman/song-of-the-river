@@ -1,0 +1,956 @@
+/*
+ * Song of the River: in-play interface outside the notebook. The season clock,
+ * the free-play valley sheets, the selection chip, toasts, hints, the
+ * journal-found note and the season title. Every surface is `.sr-paper` or
+ * `.sr-popup` and every button `.sr-word` (see `kit.css`); this file only
+ * places and sizes them.
+ */
+
+/* ---------- The annual timer ---------- */
+
+.sr-ui .clock {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* A tab hanging from the top edge: paper, a hairline on three sides, round only at the bottom. */
+.sr-ui .clock-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: calc(env(safe-area-inset-top) + 7px) 18px 9px;
+  background: var(--paper-soft);
+  border: 1px solid var(--rule-soft);
+  border-top: 0;
+  border-radius: 0 0 var(--r-soft) var(--r-soft);
+  box-shadow: var(--shadow-soft-sm);
+  -webkit-backdrop-filter: blur(var(--blur-soft));
+  backdrop-filter: blur(var(--blur-soft));
+}
+
+.sr-ui .clock-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.sr-ui .clock-mark {
+  display: flex;
+  align-self: center;
+  width: 18px;
+  height: 18px;
+}
+
+.sr-ui .clock-season {
+  font: italic 500 var(--t-lead) / 1 var(--serif);
+  color: var(--green-ink);
+}
+
+.sr-ui .clock-when {
+  font-variant-numeric: lining-nums;
+}
+
+.sr-ui .clock-line {
+  display: block;
+  overflow: visible;
+}
+
+.sr-ui .clock-line path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+/* Time to come: a dotted pen line. */
+.sr-ui .clock-future {
+  stroke: var(--green-ink-faint);
+  stroke-width: 1.2;
+  stroke-dasharray: 0.01 4;
+}
+
+.sr-ui .clock-future.is-now {
+  stroke: var(--green-ink);
+}
+
+/* Time passed: a solid line over the dots. */
+.sr-ui .clock-past {
+  stroke: var(--green-ink);
+  stroke-width: 1.5;
+}
+
+.sr-ui .clock-ticks {
+  stroke: var(--green-ink);
+  stroke-width: 1;
+}
+
+.sr-ui .clock-wash {
+  transition: x var(--dur-slow) var(--ease), width var(--dur-slow) var(--ease);
+}
+
+/* The present: a small open ring of ink on the line. */
+.sr-ui .clock-bead {
+  fill: var(--ivory);
+  stroke: var(--green-ink);
+  stroke-width: 1.3;
+}
+
+.sr-ui .clock.is-turning .clock-head {
+  animation: sr-ink-in 1.2s var(--ease);
+}
+
+@keyframes sr-ink-in {
+  from { opacity: 0.15; }
+  to { opacity: 1; }
+}
+
+/* ---------- The free-play HUD frame ---------- */
+
+.sr-ui .hud {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s var(--ease), visibility 0s linear 0.5s;
+}
+
+.sr-ui.hud-on .hud {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s var(--ease);
+}
+
+.sr-ui .hud-tl,
+.sr-ui .hud-tr,
+.sr-ui .hud-bl,
+.sr-ui .hud-br {
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+}
+
+.sr-ui .hud-tl {
+  top: var(--edge-t);
+  left: var(--edge-l);
+}
+
+.sr-ui .hud-tr {
+  top: var(--edge-t);
+  right: var(--edge-r);
+}
+
+.sr-ui .hud-bl {
+  z-index: 2;
+  bottom: var(--edge-b);
+  left: var(--edge-l);
+}
+
+.sr-ui .hud-br {
+  bottom: var(--edge-b);
+  right: var(--edge-r);
+}
+
+/* A HUD sheet: paper holding a few words, or a name and a few words. */
+.sr-ui .hud-sheet {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+}
+
+.sr-ui .hud-words {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sr-ui .sheet-valley {
+  gap: 14px;
+  padding-left: 14px;
+}
+
+.sr-ui .valley {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 6px 0 7px;
+}
+
+.sr-ui .valley-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sr-ui .valley-name {
+  font: 600 22px/1.1 var(--serif);
+}
+
+.sr-ui .valley-sub {
+  font: italic 500 var(--t-small) / 1.25 var(--serif);
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .tally {
+  display: flex;
+  gap: 1px;
+}
+
+.sr-ui .tally-glyph {
+  display: flex;
+  color: var(--green-ink-faint);
+}
+
+.sr-ui .tally-glyph.is-on {
+  color: var(--green-ink);
+}
+
+
+.sr-ui .btn-speed {
+  font-variant-numeric: lining-nums;
+}
+
+.sr-ui :is(.btn-places, .btn-routes)[aria-pressed='true'] {
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--green-ink);
+}
+
+/* ---------- Wishes (objectives) ---------- */
+
+.sr-ui .seasonal-opportunities {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 12px;
+}
+
+.sr-ui .seasonal-opportunities > summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--hit);
+  cursor: pointer;
+  list-style: none;
+}
+
+.sr-ui .seasonal-opportunities > summary::-webkit-details-marker {
+  display: none;
+}
+
+.sr-ui .seasonal-opportunities > summary::after {
+  content: '+';
+  margin-left: 10px;
+  font: 500 16px/1 var(--serif);
+}
+
+.sr-ui .seasonal-opportunities[open] > summary::after {
+  content: '−';
+}
+
+.sr-ui .objectives {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: min(55dvh, 520px);
+  overflow-y: auto;
+  padding-bottom: 8px;
+}
+
+.sr-ui .obj-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.sr-ui .obj-group:empty {
+  display: none;
+}
+
+.sr-ui .obj {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+  min-height: 52px;
+  padding: 6px 2px;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sr-ui .obj-figure {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+}
+
+.sr-ui .obj-icon,
+.sr-ui .obj-icon .sil {
+  display: block;
+  width: 28px;
+  height: 28px;
+  color: var(--green-ink);
+}
+
+.sr-ui .obj-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--rule-strong);
+}
+
+.sr-ui .obj-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sr-ui .obj-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.sr-ui .obj-title {
+  font: 600 var(--t-word) / 1.15 var(--serif);
+}
+
+@media (hover: hover) {
+  .sr-ui .obj:hover .obj-title {
+    text-decoration: underline;
+    text-decoration-color: var(--rule-strong);
+    text-underline-offset: 0.25em;
+  }
+}
+
+.sr-ui .obj-text {
+  font: italic 500 var(--t-small) / 1.3 var(--serif);
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .obj-note {
+  font: italic 500 var(--t-small) / 1.25 var(--serif);
+  color: var(--rust-ink);
+}
+
+.sr-ui .obj:not(.has-note) .obj-note,
+.sr-ui .obj-when {
+  display: none;
+}
+
+.sr-ui .obj.is-upcoming .obj-when {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: italic 500 var(--t-small) / 1.2 var(--serif);
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .obj-pips {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 7px;
+}
+
+.sr-ui .pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--green-ink-soft);
+}
+
+.sr-ui .pip.is-on {
+  background: var(--green-ink);
+  border-color: var(--green-ink);
+}
+
+.sr-ui .obj-pips.is-bar {
+  width: 72px;
+}
+
+.sr-ui .obj-bar {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+}
+
+.sr-ui .obj-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--green-ink);
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+  transition: transform var(--dur-slow) var(--ease);
+}
+
+.sr-ui .obj-check {
+  flex: none;
+  display: none;
+  width: 18px;
+  height: 18px;
+}
+
+.sr-ui .obj-check .ico {
+  width: 18px;
+  height: 18px;
+}
+
+.sr-ui .obj.is-done .obj-check {
+  display: block;
+}
+
+.sr-ui .obj.is-done .obj-title {
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .obj.is-upcoming .obj-icon {
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .obj.is-upcoming .obj-dot,
+.sr-ui .obj.is-upcoming .obj-pips {
+  display: none;
+}
+
+.sr-ui .obj.is-celebrating .obj-figure {
+  animation: sr-ink-in 1.2s var(--ease);
+}
+
+/* ---------- Brushstrokes ---------- */
+
+.sr-ui .sheet-tools {
+  padding-left: 12px;
+}
+
+.sr-ui .marks {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--hit);
+  padding-right: 8px;
+  margin-right: 2px;
+  border-right: 1px solid var(--rule);
+  pointer-events: auto;
+  cursor: help;
+}
+
+.sr-ui .marks-ink {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sr-ui .marks-total {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sr-ui .marks-svg {
+  display: block;
+  height: 20px;
+  overflow: visible;
+}
+
+.sr-ui .marks-count {
+  font: 600 15px/1.2 var(--serif);
+  font-variant-numeric: lining-nums;
+  white-space: nowrap;
+}
+
+.sr-ui .marks-caption {
+  font-size: var(--t-caps);
+  font-weight: 600;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .brush {
+  fill: var(--green-ink);
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  transition: opacity var(--dur-slow) var(--ease);
+}
+
+.sr-ui .brush.is-spent {
+  opacity: 0.16;
+}
+
+.sr-ui .brush.is-spending {
+  animation: sr-ink-lift 0.8s var(--ease) both;
+}
+
+@keyframes sr-ink-lift {
+  from { opacity: 1; }
+  to { opacity: 0.16; }
+}
+
+.sr-ui .brush.is-drawing {
+  animation: sr-ink-draw 0.55s var(--ease) var(--d, 0s) both;
+}
+
+@keyframes sr-ink-draw {
+  from { opacity: 0; transform: scaleY(0.15); }
+  to { opacity: 1; transform: none; }
+}
+
+.sr-ui .marks.is-pulsing .marks-total {
+  animation: sr-ink-in 1.2s var(--ease) 2;
+}
+
+.sr-ui .marks-tip {
+  position: absolute;
+  right: -8px;
+  bottom: calc(100% + 12px);
+  width: max-content;
+  max-width: min(260px, calc(100vw - 32px));
+  padding: 10px 14px;
+  font: italic 500 var(--t-small) / 1.35 var(--serif);
+  pointer-events: none;
+}
+
+.sr-ui .hud[data-mode='free'] .marks {
+  display: none;
+}
+
+/* ---------- Selection ---------- */
+
+.sr-ui .selection {
+  --pop-x: -50%;
+  position: absolute;
+  left: 50%;
+  bottom: var(--edge-b);
+  width: max-content;
+  max-width: min(460px, calc(100vw - 24px));
+  max-height: min(40dvh, 300px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: none;
+}
+
+.sr-ui .selection:has(.identity-editor[open]) {
+  max-height: min(65dvh, 500px);
+}
+
+.sr-ui .selection.is-shown {
+  pointer-events: auto;
+}
+
+.sr-ui .chip-sel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px 4px 14px;
+}
+
+.sr-ui .sel-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--green-ink-soft);
+}
+
+.sr-ui .selection[data-tone='open'] .sel-dot {
+  background: var(--green-ink);
+  border-color: var(--green-ink);
+}
+
+.sr-ui .selection[data-tone='closed'] .sel-dot {
+  background: var(--rust-ink);
+  border-color: var(--rust-ink);
+}
+
+.sr-ui .sel-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: var(--hit);
+  padding: 4px 8px 4px 0;
+}
+
+.sr-ui .sel-title {
+  font: 600 var(--t-word) / 1.15 var(--serif);
+  overflow-wrap: anywhere;
+}
+
+.sr-ui .sel-detail {
+  font: italic 500 var(--t-small) / 1.3 var(--serif);
+  color: var(--green-ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.sr-ui .identity-editor {
+  padding: 0 14px 10px;
+  border-top: 1px solid var(--rule);
+}
+
+.sr-ui .identity-editor > summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--hit);
+  cursor: pointer;
+}
+
+.sr-ui .identity-choices {
+  flex-wrap: wrap;
+  margin-left: -8px;
+}
+
+.sr-ui .identity-preview {
+  font-size: var(--t-body);
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.sr-ui .identity-preview p {
+  margin: 6px 0;
+}
+
+.sr-ui .identity-tradeoff {
+  font-style: italic;
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .identity-cost {
+  display: block;
+  margin: 8px 0 2px;
+}
+
+/* ---------- Toast, hint, journal found ---------- */
+
+.sr-ui .toast {
+  --pop-x: -50%;
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--edge-b) + 76px);
+  width: max-content;
+  max-width: min(380px, calc(100vw - 32px));
+  padding: 8px 16px 9px;
+  font-size: var(--t-body);
+  line-height: 1.35;
+  text-align: center;
+  pointer-events: none;
+  text-wrap: balance;
+}
+
+.sr-ui .toast.is-placed {
+  bottom: auto;
+}
+
+/* The opening hint: an italic line under the clock. */
+.sr-ui .hint {
+  --pop-x: -50%;
+  position: absolute;
+  left: 50%;
+  top: calc(var(--edge-t) + 72px);
+  width: max-content;
+  max-width: min(520px, calc(100vw - 32px));
+  margin: 0;
+  padding: 0 2px 4px;
+  font: italic 500 var(--t-lead) / 1.3 var(--serif);
+  text-align: center;
+  pointer-events: none;
+  text-wrap: balance;
+  /* A caption (kit.css .sr-caption): written on the valley, not set on paper. */
+  background: linear-gradient(var(--pencil), var(--pencil)) left bottom / 100% 1px no-repeat;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  text-shadow: var(--halo-ink);
+}
+
+.sr-ui.menu-open .hint,
+.sr-ui.results-open .hint,
+.sr-ui:not(.hud-on) .hint {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* A journal page found: a note under the valley's name. */
+.sr-ui .found {
+  position: absolute;
+  left: var(--edge-l);
+  top: calc(var(--edge-t) + 64px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  max-width: min(360px, calc(100vw - 24px));
+  padding: 8px 14px;
+  pointer-events: none;
+}
+
+.sr-ui.menu-open .found,
+.sr-ui.results-open .found {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sr-ui .found-glyph {
+  display: flex;
+}
+
+.sr-ui .found-glyph .ico {
+  width: 18px;
+  height: 18px;
+}
+
+.sr-ui .found-label {
+  font-size: var(--t-caps);
+  font-weight: 600;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--green-ink-soft);
+}
+
+.sr-ui .found-title {
+  flex: 1 1 120px;
+  min-width: 0;
+  font: italic 500 var(--t-body) / 1.25 var(--serif);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- The season title: a small card that comes and goes ---------- */
+
+.sr-ui .announce {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 26%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  /* A caption at display size: the season's name written on the valley, no paper. */
+  text-shadow: var(--halo-ink);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.sr-ui .announce.is-shown {
+  animation: sr-announce 2.6s var(--ease) forwards;
+}
+
+
+.sr-ui .announce-name {
+  font: 500 var(--t-display) / 1 var(--serif);
+  letter-spacing: 0.04em;
+}
+
+.sr-ui .announce-rule {
+  width: 40px;
+  border-top: 1px solid var(--rule-strong);
+}
+
+.sr-ui .announce-year {
+  font-size: var(--t-caps);
+  font-weight: 600;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  font-variant-numeric: lining-nums;
+  color: var(--green-ink-soft);
+}
+
+@keyframes sr-announce {
+  0% { opacity: 0; transform: translate(-50%, calc(-50% + 6px)); }
+  25% { opacity: 1; transform: translate(-50%, -50%); }
+  72% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+/* ---------- Phones and small windows ---------- */
+
+@media (max-width: 760px), (max-height: 500px) {
+  /* The clock tab takes the top centre, so the valley's sheets start below it. */
+  .sr-ui .hud-tl,
+  .sr-ui .hud-tr {
+    top: calc(var(--edge-t) + 62px);
+  }
+  .sr-ui .clock-tab {
+    padding-inline: 14px;
+  }
+  .sr-ui .clock-line {
+    width: 190px;
+  }
+  .sr-ui .clock-head { gap: 6px; }
+  .sr-ui .clock-when { font-size: 10px; letter-spacing: .08em; }
+  .sr-ui .clock-season { font-size: 18px; }
+  .sr-ui .sheet-valley {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .sr-ui .hud-words .sr-word {
+    padding: 0 4px;
+    font-size: 16px;
+  }
+  .sr-ui .hud-br {
+    left: var(--edge-l);
+    justify-content: flex-end;
+  }
+  .sr-ui .sheet-tools {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .sr-ui .hint {
+    top: calc(var(--edge-t) + 140px);
+  }
+  .sr-ui .found {
+    top: calc(var(--edge-t) + 150px);
+  }
+  .sr-ui .announce-name {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 760px) and (orientation: portrait) {
+  /* Too narrow for two sheets side by side: time first, the valley's name under it. */
+  .sr-ui .hud-tl {
+    top: calc(var(--edge-t) + 116px);
+  }
+  .sr-ui .hud-bl {
+    bottom: calc(var(--edge-b) + 110px);
+  }
+  .sr-ui .selection {
+    bottom: calc(var(--edge-b) + 110px);
+  }
+}
+
+/* ---------- Reduced motion: things appear and go without travelling ---------- */
+
+.sr-ui.is-reduced .announce.is-shown {
+  animation: sr-announce-still 2.6s linear forwards;
+}
+
+@keyframes sr-announce-still {
+  0% { opacity: 0; }
+  15%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.sr-ui.is-reduced .clock.is-turning .clock-head,
+.sr-ui.is-reduced .brush.is-drawing,
+.sr-ui.is-reduced .brush.is-spending,
+.sr-ui.is-reduced .marks.is-pulsing .marks-total,
+.sr-ui.is-reduced .obj.is-celebrating .obj-figure {
+  animation: none;
+}
+
+.sr-ui.is-reduced .clock-wash {
+  transition: none;
+}
+
+/* ---------- The slow open of a new Journey ----------
+   Dawn at Yamagoya: the interface steps aside, the opening line settles low
+   over the valley on a faint wash of paper, and a tap anywhere moves on. */
+.sr-ui .opening {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 16px calc(15vh + env(safe-area-inset-bottom, 0px));
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.sr-ui .opening.is-shown {
+  display: flex;
+}
+
+.sr-ui .opening-line {
+  max-width: min(640px, 100%);
+  margin: 0;
+  padding: 26px 56px 28px;
+  font: italic 500 clamp(20px, 1.2vw + 13px, 28px) / 1.45 var(--serif);
+  color: var(--green-ink);
+  text-align: center;
+  text-wrap: balance;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(248, 244, 234, 0.94) 0%, rgba(248, 244, 234, 0.86) 62%, rgba(248, 244, 234, 0) 100%);
+  opacity: 0;
+  transform: translateY(6px);
+  animation: sr-opening-line 1.3s cubic-bezier(0.3, 0, 0.2, 1) 1.2s forwards;
+}
+
+@keyframes sr-opening-line {
+  to { opacity: 1; transform: none; }
+}
+
+/* While it plays, nothing else is drawn over the valley. */
+.sr-ui.is-opening .nb,
+.sr-ui.is-opening .clock,
+.sr-ui.is-opening .hint,
+.sr-ui.is-opening .toast {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Then the season tab and the book come back softly. */
+.sr-ui.is-opened .clock {
+  animation: sr-arrive 0.9s var(--ease) both;
+}
+
+.sr-ui.is-reduced .opening-line {
+  animation-duration: 0.2s;
+  animation-delay: 0.3s;
+  transform: none;
+}
+
+@media (max-width: 760px) {
+  .sr-ui .opening { padding-bottom: calc(18vh + env(safe-area-inset-bottom, 0px)); }
+  .sr-ui .opening-line { padding: 22px 26px 24px; }
+}
+
+/* ---------- Something newly opened (Wander): a small paper note under the season tab ---------- */
+.sr-ui .opened-note {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: calc(var(--morning-top, 96px) + 4px);
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 10px 22px 11px;
+  text-align: center;
+  color: var(--green-ink);
+  background: rgba(243, 237, 219, .96);
+  border-radius: 4px 9px 5px 8px;
+  box-shadow: 0 3px 14px rgba(40, 50, 40, .16);
+  opacity: 0;
+  transform: translate(-50%, -6px);
+  pointer-events: none;
+  transition: opacity 500ms ease, transform 500ms var(--ease-out);
+}
+.sr-ui .opened-note.is-shown { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; cursor: pointer; }
+.sr-ui .opened-kicker { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--green-ink-soft); }
+.sr-ui .opened-name { font: 500 24px / 1.1 var(--serif); }
+.sr-ui .opened-line { font: italic 15px / 1.35 var(--serif); color: var(--green-ink); }
+.sr-ui.is-reduced .opened-note { transition: opacity 300ms linear; transform: translate(-50%, 0); }
+@media (min-width: 761px) { .sr-ui .opened-note { top: calc(var(--morning-top, 96px) + 60px); } }

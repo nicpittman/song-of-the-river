@@ -1,0 +1,12 @@
+# Dependencies and build output
+node_modules/
+dist/
+releases/
+
+# Local music (not part of this repository)
+public/audio/music/
+
+# System and editor files
+.DS_Store
+.env
+.env.*

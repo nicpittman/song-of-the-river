@@ -1,0 +1,126 @@
+/* Valley tags: the sketch that flies into the book, the bundles set down at the fire, and a creature's pencilled caption. */
+
+/* A sketch on its way into the notebook: the drawing on a soft rub of paper, no edge, no glow. */
+.sr-ui .nb-catch-fly {
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  padding: 7px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(246, 240, 226, .92) 55%, rgba(246, 240, 226, 0));
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.sr-ui .nb-catch-fly .nb-sketch { display: block; line-height: 0; }
+.sr-ui .nb-catch-fly svg { display: block; }
+
+/* The count, ticking on beside the book as the sketch goes in. */
+.sr-ui .nb-catch-tally {
+  position: fixed;
+  z-index: 3;
+  transform: translate(-50%, calc(-100% - 6px));
+  display: flex;
+  align-items: baseline;
+  padding: 2px 8px 3px;
+  border-radius: 4px 8px 5px 7px;
+  background: rgba(244, 238, 222, .94);
+  box-shadow: 0 1px 4px rgba(45, 53, 35, .12);
+  color: var(--green-ink);
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: nb-catch-tally 2200ms ease-out both;
+}
+.sr-ui .nb-catch-num { position: relative; display: inline-block; min-width: 1.1em; height: 1.2em; overflow: hidden; text-align: right; }
+.sr-ui .nb-catch-num span { position: absolute; right: 0; top: 0; }
+.sr-ui .nb-catch-was { animation: nb-catch-out 420ms 260ms ease-in both; }
+.sr-ui .nb-catch-now { animation: nb-catch-in 420ms 260ms ease-out both; }
+.sr-ui .nb-catch-of { margin-left: 3px; color: var(--green-ink-soft, #5b6a5d); font-size: 13px; }
+
+@keyframes nb-catch-tally {
+  0% { opacity: 0; margin-top: 4px; }
+  12% { opacity: 1; margin-top: 0; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes nb-catch-out { to { transform: translateY(-100%); opacity: 0; } }
+@keyframes nb-catch-in { from { transform: translateY(100%); opacity: 0; } }
+
+.sr-ui .nb-catch-tally.is-still,
+.sr-ui .nb-catch-tally.is-still .nb-catch-was,
+.sr-ui .nb-catch-tally.is-still .nb-catch-now { animation-name: nb-catch-fade; }
+.sr-ui .nb-catch-tally.is-still .nb-catch-was { animation-name: nb-catch-gone; }
+@keyframes nb-catch-fade { 0% { opacity: 0; } 15%, 75% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes nb-catch-gone { to { opacity: 0; } }
+
+/* A bundle by the fire is set down where it will stay: it fades in, no swoop, no scale. */
+.sr-ui .nb-tag.is-unpack.is-set-down .nb-tag-paper { animation: nb-set-down 420ms ease-out both; }
+@keyframes nb-set-down { from { opacity: 0; } }
+.sr-ui .nb-tag.is-unpack.is-rare.is-set-down .nb-tag-paper { animation-duration: 700ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sr-ui .nb-tag.is-unpack.is-set-down .nb-tag-paper { animation: none; }
+}
+
+/* A creature's caption is the usual paper tag; the target is bigger than the words, so a thumb anywhere near them sketches. */
+.sr-ui .nb-tags .nb-tag.is-sighting { min-width: 44px; min-height: 44px; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.sr-ui .nb-tags .nb-tag.is-sighting::before { content: ''; position: absolute; inset: -8px -6px -10px; }
+
+.sr-ui .nb-tag-dot.is-ringed { display: none; }
+
+/* Incidental choices are small notes, with quiet word actions rather than menu tiles. */
+.sr-ui .nb-tags .nb-tag.is-choice { max-width: min(300px, calc(100vw - 32px)); }
+.sr-ui .nb-tags .nb-tag.is-choice .nb-tag-paper { padding: 8px 12px; border-radius: 4px 8px 5px 7px; box-shadow: 0 2px 9px rgba(36, 54, 46, .1); }
+.sr-ui .nb-tags .nb-tag.is-choice .nb-tag-text { font-size: 15px; line-height: 1.3; }
+.sr-ui .nb-tags .nb-tag.is-choice .nb-tag-choices { gap: 0 14px; margin-top: 4px; font-size: 14px; font-weight: 400; }
+.sr-ui .nb-tags .nb-tag.is-choice .nb-tag-choice { min-height: 32px; min-width: 0; padding: 2px 0; border: 0; background: none; box-shadow: none; white-space: normal; text-align: left; line-height: 1.25; }
+.sr-ui .nb-tags .nb-tag.is-choice .nb-tag-left { margin: 2px 0 0; font-size: 12px; line-height: 1.25; }
+.sr-ui .nb-tags .nb-tag.is-choice .nb-tag-time { margin-top: 5px; opacity: .4; }
+@media (pointer: coarse) { .sr-ui .nb-tags .nb-tag.is-choice .nb-tag-choice { min-height: 44px; font-size: 15px; } }
+
+/* Keep padding and lettering in step with the existing folding animation. */
+.sr-ui .nb-tags .nb-tag.is-unpack .nb-tag-paper { position: relative; transition: padding 320ms ease; }
+.sr-ui .nb-tags .nb-tag.is-unpack .nb-tag-title { transition: font-size 320ms ease; }
+/* A tiny open V points down from speech without adding a heavy bubble border. */
+.sr-ui .nb-tags .nb-tag.is-speech .nb-tag-paper { position: relative; }
+.sr-ui .nb-tags .nb-tag.is-speech .nb-tag-paper::after,
+.sr-ui .nb-tags .nb-tag.is-unpack:not(.is-settled) .nb-tag-paper::after { content: ''; position: absolute; left: calc(50% - 4px); bottom: -4px; width: 7px; height: 7px; border-right: 1px solid rgba(67, 83, 69, .45); border-bottom: 1px solid rgba(67, 83, 69, .45); transform: rotate(45deg); pointer-events: none; }
+.sr-ui.is-reduced .nb-tags .nb-tag.is-unpack :is(.nb-tag-paper, .nb-tag-text, .nb-tag-supplies, .nb-tag-title) { transition: none; }
+@media (prefers-reduced-motion: reduce) { .sr-ui .nb-tags .nb-tag.is-unpack :is(.nb-tag-paper, .nb-tag-text, .nb-tag-supplies, .nb-tag-title) { transition: none; } }
+
+/* A phone's quiet pointer to a creature beyond the edge of the view: a pencilled tick, a thumb-sized target. */
+.sr-ui .nb-tags .nb-edge-mark {
+  position: absolute;
+  top: -22px;
+  left: -22px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  will-change: transform;
+  animation: nb-edge-in 420ms ease-out both;
+  transition: opacity 240ms ease-out;
+}
+.sr-ui .nb-tags .nb-edge-mark::before { content: ''; position: absolute; inset: 7px; border-radius: 50%; background: radial-gradient(closest-side, rgba(246, 240, 226, .78) 45%, rgba(246, 240, 226, 0)); }
+.sr-ui .nb-tags .nb-edge-mark svg { position: relative; display: block; }
+.sr-ui .nb-tags .nb-edge-mark.is-gone { opacity: 0; pointer-events: none; }
+.sr-ui .nb-tags .nb-edge-mark:focus-visible { outline: 1.5px dashed rgba(90, 78, 66, .6); outline-offset: -6px; border-radius: 50%; }
+@keyframes nb-edge-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .sr-ui .nb-tags .nb-edge-mark { animation: none; transition: none; }
+}
+
+/* A caption crossing another on its way to its new side steps aside for a moment rather than passing over it. */
+.sr-ui .nb-tags .nb-tag:not(.is-unpack) { transition: opacity 150ms ease-out; }
+.sr-ui.is-reduced .nb-tags .nb-tag:not(.is-unpack) { transition: none; }
+@media (prefers-reduced-motion: reduce) { .sr-ui .nb-tags .nb-tag:not(.is-unpack) { transition: none; } }
+
+/* "· tap to sketch" never breaks inside itself. */
+.sr-ui .nb-tags .nb-tag-hint { white-space: nowrap; }

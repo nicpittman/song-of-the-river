@@ -1,0 +1,29 @@
+/*
+ * The voyage's words wear the same paper as the line about tomorrow over the
+ * fire: italic ink on a breath of paper that fades out to the sides, compact,
+ * no box. The doubled class only outweighs the older caption rules.
+ */
+.sr-ui .nb .nb-voyage-caption.nb-voyage-caption {
+  padding: 10px 56px 11px;
+  gap: 4px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(244, 238, 222, 0), rgba(244, 238, 222, .92) 48px, rgba(244, 238, 222, .95) 50%, rgba(244, 238, 222, .92) calc(100% - 48px), rgba(244, 238, 222, 0));
+}
+.sr-ui .nb .nb-voyage-caption.nb-voyage-caption.is-final-voyage {
+  grid-template-rows: none;
+  max-height: none;
+}
+.sr-ui .nb .nb-voyage-caption.nb-voyage-caption .nb-voyage-line { font-style: italic; text-wrap: balance; }
+@media (max-width: 760px) {
+  .sr-ui .nb .nb-voyage-caption.nb-voyage-caption {
+    padding: 8px 34px 9px;
+    background: linear-gradient(90deg, rgba(244, 238, 222, 0), rgba(244, 238, 222, .92) 30px, rgba(244, 238, 222, .95) 50%, rgba(244, 238, 222, .92) calc(100% - 30px), rgba(244, 238, 222, 0));
+  }
+}
+
+/* The wash over the voyage's one cut: the same paper, a touch deeper at the edges, rising and falling smoothly rather than flashing white. */
+.sr-ui .nb .nb-voyage-cut.nb-voyage-cut {
+  background: radial-gradient(ellipse 80% 70% at 50% 45%, #f4eede 0%, #f1e9d6 60%, #e9e0ca 100%);
+  transition: opacity 90ms linear;
+}
+.sr-ui.is-reduced .nb .nb-voyage-cut.nb-voyage-cut { transition: none; }
